@@ -5,21 +5,89 @@
 
 .detail {
   width: vw(720px);
+
+  .divide {
+    width: 100%;
+    height: vw(1px);
+    background-color: $GRAY-E4;
+  }
   &_title {
     // justify-content: flex-start;
     margin: vw(84px) 0 vw(32px) 0;
     color: $GRAY-40;
   }
   &_camp {
-    &_img {
+    &_img_box {
       width: vw(720px);
       height: vw(480px);
       padding-bottom: vw(36px);
+      overflow: hidden;
+      img {
+        width: 100%; // 원본비율 유지
+        height: 100%;
+        object-fit: cover; // 상위 div 크기에 딱 맞아 들어가도록
+      }
     }
 
     &_intro {
       padding-bottom: vw(32px);
       color: $GRAY-40;
+    }
+
+    &_sub {
+      color: $GRAY-67;
+      margin-bottom: vw(12px);
+      justify-content: space-between;
+
+      &_distance {
+        color: $MAIN;
+      }
+    }
+
+    &_btn {
+      margin: vw(58px) 0 vw(60px) 0;
+
+      &_plan,
+      &_site {
+        width: vw(182px);
+        height: vw(50px);
+        border-radius: vw(15px);
+        margin: 0 vw(24px) 0 vw(24px);
+      }
+
+      &_plan {
+        color: $MAIN;
+        background-color: $WHITE;
+        border: 2px solid $MAIN;
+      }
+      &_site {
+        color: $WHITE;
+        background-color: $MAIN;
+      }
+
+      &_plan:hover,
+      &_site:hover {
+        box-shadow: 0px 0px 5px $MAIN;
+      }
+    }
+
+    &_text {
+      &_info,
+      &_map {
+        margin: vw(40px) 0 vw(36px) 0;
+        &_title {
+          color: $GRAY-40;
+          margin-bottom: vw(32px);
+        }
+
+        &_sub {
+          color: $GRAY-67;
+
+          &_basic {
+            padding-bottom: vw(24px);
+          }
+        }
+      }
     }
   }
 }
