@@ -1,0 +1,25 @@
+.container {
+  justify-content: center;
+  //   align-items: center;
+}
+
+.detail {
+  width: vw(720px);
+  &_title {
+    // justify-content: flex-start;
+    margin: vw(84px) 0 vw(32px) 0;
+    color: $GRAY-40;
+  }
+  &_camp {
+    &_img {
+      width: vw(720px);
+      height: vw(480px);
+      padding-bottom: vw(36px);
+    }
+
+    &_intro {
+      padding-bottom: vw(32px);
+      color: $GRAY-40;
+    }
+  }
+}
