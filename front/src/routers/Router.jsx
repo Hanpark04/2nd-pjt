@@ -3,9 +3,12 @@ import { Route, Routes } from "react-router-dom";
 import MainNavBar from "@components/common/MainNavBar";
 
 import Home from "@screens/Home";
-import Login from "@screens/Login";
-import Join from "@screens/Join";
-import JoinFinish from "@screens/JoinFinish";
+
+import Login from "@screens/user/Login";
+import Join from "@screens/user/Join";
+import JoinFinish from "@screens/user/JoinFinish";
+import FindId from "@screens/user/FindId";
+import FindIdFinish from "@screens/user/FindIdFinish";
 
 // community
 import CommunityMain from "@screens/community/CommunityMain";
@@ -28,6 +31,12 @@ function Router() {
         <Route path="/join/*">
           <Route index element={<Join />} />
           <Route path="finish" element={<JoinFinish />} />
+        </Route>
+
+        {/* find ID/PW  */}
+        <Route path="/findid/*">
+          <Route index element={<FindId />} />
+          <Route path="finish" element={<FindIdFinish />} />
         </Route>
 
         {/* community */}
