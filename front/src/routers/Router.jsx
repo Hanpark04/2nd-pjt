@@ -9,6 +9,7 @@ import Join from "@screens/user/Join";
 import JoinFinish from "@screens/user/JoinFinish";
 import FindId from "@screens/user/FindId";
 import FindIdFinish from "@screens/user/FindIdFinish";
+import FindPw from "@screens/user/FindPw";
 
 // community
 import CommunityMain from "@screens/community/CommunityMain";
@@ -37,6 +38,9 @@ function Router() {
         <Route path="/findid/*">
           <Route index element={<FindId />} />
           <Route path="finish" element={<FindIdFinish />} />
+        </Route>
+        <Route path="/findpw/*">
+          <Route index element={<FindPw />} />
         </Route>
 
         {/* community */}

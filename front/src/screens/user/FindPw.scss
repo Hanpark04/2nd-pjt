@@ -1,9 +1,15 @@
 .container {
   justify-content: center;
 }
-.findid {
+.findpw {
   width: vw(300px);
   flex-direction: column;
+  .divide {
+    width: 100%;
+    height: vw(1px);
+    background-color: $GRAY-F3;
+    margin-bottom: vw(40px);
+  }
   &_title {
     color: $GRAY-40;
     margin: vw(176px) 0 vw(16px);
@@ -13,7 +19,7 @@
     color: $GRAY-67;
     margin-bottom: vw(4px);
   }
-  &_phone {
+  &_email {
     &_title,
     &_check,
     input {
@@ -53,10 +59,16 @@
   }
   &_ask {
     color: $GRAY-67;
-    margin-bottom: vw(20px);
+    margin-bottom: vw(32px);
     &_login {
       margin-left: vw(6px);
       text-decoration: underline;
+    }
+  }
+  &_alert {
+    color: $GRAY-76;
+    &_sub2, &_sub3 {
+      margin-top: vw(20px);
     }
   }
 }
