@@ -1,0 +1,71 @@
+.card {
+  margin-top: vw(48px);
+  width: vw(1170px);
+
+  &_img {
+    margin-bottom: vw(40px);
+    width: vw(1170px);
+    height: vw(483px);
+    &_cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      overflow: hidden;
+      border-radius: vw(20px);
+      border: none;
+    }
+  }
+
+  &_info {
+    justify-content: space-between;
+    padding-bottom: vw(53px);
+
+    &_txt {
+      &_name {
+        color: $GRAY-40;
+        margin-bottom: vw(12px);
+      }
+
+      &_place {
+        &_icon {
+          margin-right: vw(8px);
+
+          width: vw(30px);
+          height: vw(30px);
+        }
+        &_text {
+          color: $GRAY-67;
+        }
+      }
+    }
+
+    &_btn {
+      &_plan,
+      &_move {
+        width: vw(182px);
+        height: vw(50px);
+        border-radius: vw(15px);
+        border: vw(1px) solid $MAIN;
+        margin-left: vw(20px);
+        box-shadow: 0 0 vw(5px) $MAIN;
+
+        :hover {
+          //   opacity: 80%;
+        }
+      }
+      &_plan {
+        color: $MAIN;
+      }
+      &_move {
+        background-color: $MAIN;
+        color: $WHITE;
+      }
+    }
+  }
+
+  .divide {
+    width: 100%;
+    height: vw(1px);
+    background-color: $GRAY-E4;
+  }
+}

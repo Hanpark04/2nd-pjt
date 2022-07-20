@@ -4,23 +4,23 @@
 }
 
 .detail {
-  width: vw(720px);
+  width: (720px);
 
   .divide {
     width: 100%;
-    height: vw(1px);
+    height: (1px);
     background-color: $GRAY-E4;
   }
   &_title {
     // justify-content: flex-start;
-    margin: vw(84px) 0 vw(32px) 0;
+    margin: (84px) 0 (32px) 0;
     color: $GRAY-40;
   }
   &_camp {
     &_img_box {
-      width: vw(720px);
-      height: vw(480px);
-      padding-bottom: vw(36px);
+      width: (720px);
+      height: (480px);
+      padding-bottom: (36px);
       overflow: hidden;
       img {
         width: 100%; // 원본비율 유지
@@ -30,13 +30,13 @@
     }
 
     &_intro {
-      padding-bottom: vw(32px);
+      padding-bottom: (32px);
       color: $GRAY-40;
     }
 
     &_sub {
       color: $GRAY-67;
-      margin-bottom: vw(12px);
+      margin-bottom: (12px);
       justify-content: space-between;
 
       &_distance {
@@ -45,14 +45,14 @@
     }
 
     &_btn {
-      margin: vw(58px) 0 vw(60px) 0;
+      margin: (58px) 0 (60px) 0;
 
       &_plan,
       &_site {
-        width: vw(182px);
-        height: vw(50px);
-        border-radius: vw(15px);
-        margin: 0 vw(24px) 0 vw(24px);
+        width: (182px);
+        height: (50px);
+        border-radius: (15px);
+        margin: 0 (24px) 0 (24px);
       }
 
       &_plan {
@@ -74,17 +74,375 @@
     &_text {
       &_info,
       &_map {
-        margin: vw(40px) 0 vw(36px) 0;
+        margin: (40px) 0 (36px) 0;
         &_title {
           color: $GRAY-40;
-          margin-bottom: vw(32px);
+          margin-bottom: (32px);
         }
 
         &_sub {
           color: $GRAY-67;
 
           &_basic {
-            padding-bottom: vw(24px);
+            padding-bottom: (24px);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $DESKTOP-VW) {
+  .detail {
+    width: vw(720px);
+
+    .divide {
+      width: 100%;
+      height: vw(1px);
+      background-color: $GRAY-E4;
+    }
+    &_title {
+      // justify-content: flex-start;
+      margin: vw(84px) 0 vw(32px) 0;
+      color: $GRAY-40;
+    }
+    &_camp {
+      &_img_box {
+        width: vw(720px);
+        height: vw(480px);
+        padding-bottom: vw(36px);
+        overflow: hidden;
+        img {
+          width: 100%; // 원본비율 유지
+          height: 100%;
+          object-fit: cover; // 상위 div 크기에 딱 맞아 들어가도록
+        }
+      }
+
+      &_intro {
+        padding-bottom: vw(32px);
+        color: $GRAY-40;
+      }
+
+      &_sub {
+        color: $GRAY-67;
+        margin-bottom: vw(12px);
+        justify-content: space-between;
+
+        &_distance {
+          color: $MAIN;
+        }
+      }
+
+      &_btn {
+        margin: vw(58px) 0 vw(60px) 0;
+
+        &_plan,
+        &_site {
+          width: vw(182px);
+          height: vw(50px);
+          border-radius: vw(15px);
+          margin: 0 vw(24px) 0 vw(24px);
+        }
+
+        &_plan {
+          color: $MAIN;
+          background-color: $WHITE;
+          border: 2px solid $MAIN;
+        }
+        &_site {
+          color: $WHITE;
+          background-color: $MAIN;
+        }
+
+        &_plan:hover,
+        &_site:hover {
+          box-shadow: 0px 0px 5px $MAIN;
+        }
+      }
+
+      &_text {
+        &_info,
+        &_map {
+          margin: vw(40px) 0 vw(36px) 0;
+          &_title {
+            color: $GRAY-40;
+            margin-bottom: vw(32px);
+          }
+
+          &_sub {
+            color: $GRAY-67;
+
+            &_basic {
+              padding-bottom: vw(24px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $DESKTOP-VW) {
+  .detail {
+    width: vw(720px);
+
+    .divide {
+      width: 100%;
+      height: vw(1px);
+      background-color: $GRAY-E4;
+    }
+    &_title {
+      // justify-content: flex-start;
+      margin: vw(84px) 0 vw(32px) 0;
+      color: $GRAY-40;
+    }
+    &_camp {
+      &_img_box {
+        width: vw(720px);
+        height: vw(480px);
+        padding-bottom: vw(36px);
+        overflow: hidden;
+        img {
+          width: 100%; // 원본비율 유지
+          height: 100%;
+          object-fit: cover; // 상위 div 크기에 딱 맞아 들어가도록
+        }
+      }
+
+      &_intro {
+        padding-bottom: vw(32px);
+        color: $GRAY-40;
+      }
+
+      &_sub {
+        color: $GRAY-67;
+        margin-bottom: vw(12px);
+        justify-content: space-between;
+
+        &_distance {
+          color: $MAIN;
+        }
+      }
+
+      &_btn {
+        margin: vw(58px) 0 vw(60px) 0;
+
+        &_plan,
+        &_site {
+          width: vw(182px);
+          height: vw(50px);
+          border-radius: vw(15px);
+          margin: 0 vw(24px) 0 vw(24px);
+        }
+
+        &_plan {
+          color: $MAIN;
+          background-color: $WHITE;
+          border: 2px solid $MAIN;
+        }
+        &_site {
+          color: $WHITE;
+          background-color: $MAIN;
+        }
+
+        &_plan:hover,
+        &_site:hover {
+          box-shadow: 0px 0px 5px $MAIN;
+        }
+      }
+
+      &_text {
+        &_info,
+        &_map {
+          margin: vw(40px) 0 vw(36px) 0;
+          &_title {
+            color: $GRAY-40;
+            margin-bottom: vw(32px);
+          }
+
+          &_sub {
+            color: $GRAY-67;
+
+            &_basic {
+              padding-bottom: vw(24px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $TABLET-VW) {
+  .detail {
+    width: vw-t(720px);
+
+    .divide {
+      width: 100%;
+      height: vw-t(1px);
+      background-color: $GRAY-E4;
+    }
+    &_title {
+      // justify-content: flex-start;
+      margin: vw-t(84px) 0 vw-t(32px) 0;
+    }
+    &_camp {
+      &_img_box {
+        width: vw-t(720px);
+        height: vw-t(480px);
+        padding-bottom: vw-t(36px);
+        img {
+          width: 100%; // 원본비율 유지
+          height: 100%;
+          object-fit: cover; // 상위 div 크기에 딱 맞아 들어가도록
+        }
+      }
+
+      &_intro {
+        padding-bottom: vw-t(32px);
+      }
+
+      &_sub {
+        margin-bottom: vw-t(12px);
+
+        &_distance {
+        }
+      }
+
+      &_btn {
+        margin: vw-t(58px) 0 vw-t(60px) 0;
+
+        &_plan,
+        &_site {
+          width: vw-t(182px);
+          height: vw-t(50px);
+          border-radius: vw-t(15px);
+          margin: 0 vw-t(24px) 0 vw-t(24px);
+        }
+
+        &_plan {
+          color: $MAIN;
+          background-color: $WHITE;
+          border: 2px solid $MAIN;
+        }
+        &_site {
+          color: $WHITE;
+          background-color: $MAIN;
+        }
+
+        &_plan:hover,
+        &_site:hover {
+          box-shadow: 0px 0px 5px $MAIN;
+        }
+      }
+
+      &_text {
+        &_info,
+        &_map {
+          margin: vw-t(40px) 0 vw-t(36px) 0;
+          &_title {
+            color: $GRAY-40;
+            margin-bottom: vw-t(32px);
+          }
+
+          &_sub {
+            color: $GRAY-67;
+
+            &_basic {
+              padding-bottom: vw-t(24px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $PHONE-VW) {
+  .detail {
+    width: vw-p(720px);
+
+    .divide {
+      width: 100%;
+      height: vw-p(1px);
+      background-color: $GRAY-E4;
+    }
+    &_title {
+      // justify-content: flex-start;
+      margin: vw-p(84px) 0 vw-p(32px) 0;
+      color: $GRAY-40;
+    }
+    &_camp {
+      &_img_box {
+        width: vw-p(720px);
+        height: vw-p(480px);
+        padding-bottom: vw-p(36px);
+        overflow: hidden;
+        img {
+          width: 100%; // 원본비율 유지
+          height: 100%;
+          object-fit: cover; // 상위 div 크기에 딱 맞아 들어가도록
+        }
+      }
+
+      &_intro {
+        padding-bottom: vw-p(32px);
+        color: $GRAY-40;
+      }
+
+      &_sub {
+        color: $GRAY-67;
+        margin-bottom: vw-p(12px);
+        justify-content: space-between;
+
+        &_distance {
+          color: $MAIN;
+        }
+      }
+
+      &_btn {
+        margin: vw-p(58px) 0 vw-p(60px) 0;
+
+        &_plan,
+        &_site {
+          width: vw-p(182px);
+          height: vw-p(50px);
+          border-radius: vw-p(15px);
+          margin: 0 vw-p(24px) 0 vw-p(24px);
+        }
+
+        &_plan {
+          color: $MAIN;
+          background-color: $WHITE;
+          border: 2px solid $MAIN;
+        }
+        &_site {
+          color: $WHITE;
+          background-color: $MAIN;
+        }
+
+        &_plan:hover,
+        &_site:hover {
+          box-shadow: 0px 0px 5px $MAIN;
+        }
+      }
+
+      &_text {
+        &_info,
+        &_map {
+          margin: vw-p(40px) 0 vw-p(36px) 0;
+          &_title {
+            color: $GRAY-40;
+            margin-bottom: vw-p(32px);
+          }
+
+          &_sub {
+            color: $GRAY-67;
+
+            &_basic {
+              padding-bottom: vw-p(24px);
+            }
           }
         }
       }

@@ -1,7 +1,8 @@
 import React from "react";
+import CampingList from "@components/camping/CampingList";
 
 function CampingMain() {
-  return <>CampingMain PUBLISHING</>;
+  return <CampingList />;
 }
 
 export default CampingMain;
