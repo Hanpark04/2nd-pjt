@@ -1,0 +1,47 @@
+.search {
+  &_loca {
+    select,
+    button {
+      border: vw(1.5px) solid $MAIN;
+      height: vw(46px);
+      border-radius: vw(15px);
+      &:hover,
+      &:focus {
+        box-shadow: 0 0 vw(5px) $MAIN;
+      }
+    }
+
+    select {
+      width: vw(143px);
+      color: $GRAY-DB;
+      padding: 0 vw(16px);
+      margin-right: vw(24px);
+      appearance: none;
+    }
+    button {
+      width: vw(122px);
+      margin-left: vw(10px);
+      color: $WHITE;
+      background-color: $MAIN;
+    }
+  }
+
+  &_tag {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    button {
+      color: $GRAY-BF;
+      border: vw(1.5px) solid $GRAY-BF;
+      padding: vw(7px) vw(20px);
+      border-radius: vw(20px);
+      margin: 0 vw(8px) vw(16px) 0;
+      &:focus {
+        background-color: $MAIN;
+        color: $WHITE;
+        opacity: 0.8;
+        border: vw(1.5px) solid $MAIN;
+      }
+    }
+  }
+}

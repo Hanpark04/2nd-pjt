@@ -7,6 +7,12 @@ import placeIcon from "@images/icon/place_black_24dp.svg";
 function CampingCard() {
   const name = "수완동 캠핑장";
   const place = "광주광역시 광산구 수완동 1111-1111";
+  const url = "https://naver.com";
+
+  const moveSite = () => {
+    window.open(`${url}`);
+  };
+
   return (
     <div className="card flex column">
       <div className="card_img">
@@ -32,7 +38,11 @@ function CampingCard() {
           <button type="button" className="card_info_btn_plan notoBold fs-20">
             일정에 추가하기
           </button>
-          <button type="button" className="card_info_btn_move notoBold fs-20">
+          <button
+            type="button"
+            className="card_info_btn_move notoBold fs-20"
+            onClick={moveSite}
+          >
             사이트 바로가기
           </button>
         </div>
