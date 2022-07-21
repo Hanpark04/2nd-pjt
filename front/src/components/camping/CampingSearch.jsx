@@ -68,7 +68,16 @@ export function CampingSearchTag() {
       {tag}
     </button>
   ));
-  return <div className="search_tag flex">{tagList}</div>;
+  return (
+    <div className="search_tag flex">
+      <div className="search_tag_list">{tagList}</div>
+      <div className="search_tag_fin">
+        <button type="button" className="fs-18 notoBold">
+          검색
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export const ex = () => {};

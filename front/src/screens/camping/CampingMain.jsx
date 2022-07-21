@@ -21,7 +21,7 @@ function CampingMain() {
   ));
   return (
     <div className="container flex justify-center">
-      <div className="main flex">
+      <div className="main">
         <div className="main_title flex notoBold fs-32">
           <div className="main_title_left">
             <div className="main_title_left_txt">캠핑장 찾고 계신가요?</div>

@@ -27,20 +27,33 @@
   }
 
   &_tag {
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    align-items: flex-end;
 
-    button {
-      color: $GRAY-BF;
-      border: vw(1.5px) solid $GRAY-BF;
-      padding: vw(7px) vw(20px);
-      border-radius: vw(20px);
-      margin: 0 vw(8px) vw(16px) 0;
-      &:focus {
-        background-color: $MAIN;
+    &_list {
+      justify-content: center;
+      flex-wrap: wrap;
+      button {
+        color: $GRAY-BF;
+        border: vw(1.5px) solid $GRAY-BF;
+        padding: vw(7px) vw(20px);
+        border-radius: vw(20px);
+        margin: 0 vw(8px) vw(16px) 0;
+        &:focus {
+          background-color: $MAIN;
+          color: $WHITE;
+          opacity: 0.8;
+          border: vw(1.5px) solid $MAIN;
+        }
+      }
+    }
+    &_fin {
+      button {
+        width: vw(122px);
+        height: vw(46px);
+        margin-left: vw(10px);
         color: $WHITE;
-        opacity: 0.8;
-        border: vw(1.5px) solid $MAIN;
+        background-color: $MAIN;
+        border-radius: vw(15px);
       }
     }
   }
