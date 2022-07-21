@@ -23,7 +23,7 @@ function FindIdFinish() {
         <div className="findidfin_pw">
           <Link
             className="findidfin_pw_btn flex align-center justify-center notoBold fs-18"
-            to="/"
+            to="/findpw"
           >
             비밀번호 찾기
           </Link>

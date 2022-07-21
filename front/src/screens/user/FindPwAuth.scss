@@ -1,7 +1,7 @@
 .container {
   justify-content: center;
 }
-.findpw {
+.findpwauth {
   width: vw(300px);
   flex-direction: column;
   .divide {
@@ -21,7 +21,6 @@
   }
   &_email {
     &_title,
-    &_check,
     input {
       margin-bottom: vw(12px);
     }
@@ -41,16 +40,13 @@
       border: 1px solid $MAIN;
       box-shadow: 0 0 5px $MAIN;
     }
-    &_check {
-      color: $RED;
-    }
   }
   &_btn {
     width: vw(300px);
     height: vw(52px);
     color: $WHITE;
     background-color: $MAIN;
-    margin: vw(14px) 0 vw(24px);
+    margin: vw(43px) 0 vw(24px);
     border-radius: vw(6px);
   }
   &_btn:hover {
@@ -59,9 +55,9 @@
   &_ask {
     color: $GRAY-67;
     margin-bottom: vw(32px);
-    &_login {
-      margin-left: vw(6px);
+    &_resend {
       text-decoration: underline;
+      height: vw(18px);
     }
   }
   &_alert {
@@ -70,4 +66,5 @@
       margin-top: vw(20px);
     }
   }
+
 }

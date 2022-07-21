@@ -1,25 +1,15 @@
-.container {
-  justify-content: center;
-}
-.findpw {
+.findpwch {
   width: vw(300px);
   flex-direction: column;
-  .divide {
-    width: 100%;
-    height: vw(1px);
-    background-color: $GRAY-F3;
-    margin-bottom: vw(40px);
-  }
   &_title {
     color: $GRAY-40;
     margin: vw(176px) 0 vw(16px);
   }
-  &_sub1,
-  &_sub2 {
+  &_sub {
     color: $GRAY-67;
-    margin-bottom: vw(4px);
+    margin-bottom: vw(46px);
   }
-  &_email {
+  &_pw, &_pw2 {
     &_title,
     &_check,
     input {
@@ -27,7 +17,6 @@
     }
     &_title {
       color: $GRAY-67;
-      margin-top: vw(42px);
     }
     input {
       width: vw(300px);
@@ -50,24 +39,10 @@
     height: vw(52px);
     color: $WHITE;
     background-color: $MAIN;
-    margin: vw(14px) 0 vw(24px);
+    margin-top: vw(51px);
     border-radius: vw(6px);
   }
   &_btn:hover {
     box-shadow: 0px 0px 5px $MAIN;
-  }
-  &_ask {
-    color: $GRAY-67;
-    margin-bottom: vw(32px);
-    &_login {
-      margin-left: vw(6px);
-      text-decoration: underline;
-    }
-  }
-  &_alert {
-    color: $GRAY-76;
-    &_sub2, &_sub3 {
-      margin-top: vw(20px);
-    }
   }
 }
