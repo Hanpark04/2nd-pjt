@@ -1,0 +1,81 @@
+.container {
+  justify-content: center;
+}
+.infoedit {
+  width: vw(350px);
+}
+.infoedit1 {
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  .divide {
+    width: 100%;
+    height: vw(1px);
+    background-color: $GRAY-F3;
+    margin: vw(38px) 0 vw(28px);
+  }
+  &_title {
+    color: $GRAY-40;
+    margin: vw(140px) 0 vw(40px);
+  }
+  img {
+    height: vw(100px);
+    width: vw(100px);
+  }
+  &_btn {
+    color: $GRAY-67;
+    margin-top: vw(24px);
+  }
+}
+.infoedit2, .infoedit3, .infoedit4, .infoedit5 {
+  width: vw(300px);
+  margin: 0 vw(25px) 0 vw(25px);
+  align-items: center;
+  flex-direction: column;
+  &_title {
+    color: $GRAY-67;
+  }
+  input {
+    width: vw(300px);
+    height: vw(44px);
+    border-radius: vw(6px);
+    padding-left: vw(16px);
+    margin: vw(12px) 0 vw(37px);
+  }
+}
+.infoedit3, .infoedit4 {
+  input {
+    border: 1px solid $MAIN;
+    color: $GRAY-40;
+  }
+  input:focus {
+    border: 1px solid $MAIN;
+    box-shadow: 0 0 5px $MAIN;
+  }
+}
+.infoedit2, .infoedit5 {
+  input {
+    background-color: $GRAY-DB;
+    color: $GRAY-61;
+  }
+}
+.infoedit6 {
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  &_btn1, &_btn2 {
+    width: vw(300px);
+    height: vw(52px);
+    color: $WHITE;
+    background-color: $GRAY-E4;
+    border-radius: vw(6px);
+    margin: vw(11px)0 vw(5px);
+  }
+  &_btn1:hover, &_btn2:hover {
+    box-shadow: 0px 0px 5px $MAIN;
+  }
+  &_drop {
+    margin-top: vw(27px);
+    color: $GRAY-DB;
+  }
+}
