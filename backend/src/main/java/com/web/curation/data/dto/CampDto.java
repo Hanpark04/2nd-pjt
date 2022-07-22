@@ -1,20 +1,17 @@
-package com.web.curation.data.entity;
+package com.web.curation.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 
 @Getter
 @Setter
-@Entity
-public class TotalCampList {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private int campId;
+public class CampDto {
 
+    private int campId;
     private String facltNm;
     private String lineIntro;
-    @Column(length=1000)
     private String intro;
     private String bizrno;
     private String doNm;
@@ -28,5 +25,4 @@ public class TotalCampList {
     private String resveUrl;
     private String resveCl;
     private String firstImageUrl;
-
 }
