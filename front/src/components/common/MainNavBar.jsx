@@ -41,7 +41,7 @@ function MainNavBar() {
           <NavLink className="right_nav__link fs-16" to="/login">
             로그인
           </NavLink>
-          <NavLink className="right_nav__link fs-16" to="/join/finish">
+          <NavLink className="right_nav__link fs-16" to="/join">
             회원가입
           </NavLink>
         </nav>

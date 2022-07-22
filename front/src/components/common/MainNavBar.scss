@@ -19,8 +19,8 @@
 
   .left_nav {
     &__link + .left_nav__link {
-      //   align-items: center;
-      margin-right: (40px);
+      // align-items: center;
+      margin-right: vw(40px);
     }
 
     .btn--active {
