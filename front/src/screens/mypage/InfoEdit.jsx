@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "@images/logo/logo_icon_white.svg";
+import logo from "@images/logo/loco_icon_green.svg";
 import "./InfoEdit.scss";
 
 function InfoEdit() {

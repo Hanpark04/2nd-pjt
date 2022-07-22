@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "@images/logo/logo_icon_white.svg";
+import logo from "@images/logo/loco_icon_green.svg";
 import "./PwEdit.scss";
 
 function PwEdit() {
