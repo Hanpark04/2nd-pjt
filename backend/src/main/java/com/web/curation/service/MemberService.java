@@ -8,4 +8,11 @@ public interface MemberService {
     boolean register(UserDto registerDto);
     UserDto login(UserDto loginUser) throws RuntimeException;
 
+    UserDto userInfo(String email);
+
+    boolean updateUser(UserDto userDto);
+    boolean deleteUser(String email);
+
+    boolean updatePsssword(String email, String password);
+
 }

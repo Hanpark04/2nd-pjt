@@ -31,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // 회원가입
     @Override
     public boolean register(UserDto registerUser) {
         LOGGER.info("[getSignUpResult] 회원 가입 정보 전달");
@@ -72,6 +73,7 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    // 로그인
     @Override
     public UserDto login(UserDto loginUser) throws RuntimeException {
         LOGGER.info("[getSignInResult] signDataHandler 로 회원 정보 요청");
@@ -91,5 +93,42 @@ public class MemberServiceImpl implements MemberService {
         userDto.setToken(jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoleType()));
 
         return userDto;
+    }
+
+    // 회원 정보 조회
+    @Override
+    public UserDto userInfo(String email) {
+        UserDto userDto = new UserDto();
+        User user = userRepository.getByEmail(email);
+
+        userDto.setUserName(user.getUsername());
+        userDto.setEmail(user.getEmail());
+        userDto.setNickname(user.getNickname());
+//        userDto.setPassword(user.getPassword()); ==> 이 값은 여기서 안줘되 될거 같음
+        userDto.setTel(user.getTel());
+        userDto.setBirth(user.getBirth());
+        userDto.setProfileImg(user.getProfileImg());
+        userDto.setJoinDate(user.getJoinDate());
+        userDto.setAuth(String.valueOf(user.getRoleType()));
+
+        return userDto;
+    }
+
+    // 회원정보 수정
+    @Override
+   public boolean updateUser(UserDto userDto) {
+        return false;
+    }
+
+    // 회원 탈퇴
+    @Override
+    public boolean deleteUser(String email) {
+        return false;
+    }
+
+    // 비밀번호 변경
+    @Override
+    public boolean updatePsssword(String email, String password) {
+        return false;
     }
 }
