@@ -1,12 +1,13 @@
 package com.web.curation.data.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -21,10 +22,18 @@ public class LikedCampList {
 
     @ManyToOne
     @JoinColumn(name = "campId")
-
     private TotalCampList totalCampList;
-    private java.util.Date startDate;
-    private java.util.Date endDate;
 
+    private String startDate;
+    private String endDate;
+
+//    @Builder
+//    public LikedCampList(int saveId, User userId, TotalCampList campId, Date startDate, Date endDate){
+//        this.saveId = saveId;
+//        this.user = userId;
+//        this.totalCampList = campId;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//    }
 
 }
