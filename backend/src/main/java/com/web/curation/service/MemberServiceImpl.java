@@ -101,7 +101,7 @@ public class MemberServiceImpl implements MemberService {
         UserDto userDto = new UserDto();
         User user = userRepository.getByEmail(email);
 
-        userDto.setUserName(user.getUsername());
+        userDto.setUserName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setNickname(user.getNickname());
 //        userDto.setPassword(user.getPassword()); ==> 이 값은 여기서 안줘도 될거 같음
