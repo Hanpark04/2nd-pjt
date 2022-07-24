@@ -19,9 +19,9 @@ public class MemberServiceImpl implements MemberService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(MemberServiceImpl.class);
 
-    public UserRepository userRepository;
-    public JwtTokenProvider jwtTokenProvider;
-    public PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public MemberServiceImpl(UserRepository userRepository, JwtTokenProvider jwtTokenProvider,
