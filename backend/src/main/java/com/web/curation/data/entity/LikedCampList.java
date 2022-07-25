@@ -27,19 +27,14 @@ public class LikedCampList {
     private String startDate;
     private String endDate;
 
-//    @Builder
-//    public LikedCampList(int saveId, User userId, TotalCampList campId, Date startDate, Date endDate){
-//        this.saveId = saveId;
-//        this.user = userId;
-//        this.totalCampList = campId;
-//        this.startDate = startDate;
-//        this.endDate = endDate;
-//    }
+    private String savedTitle;
+
 
     /* 게시글 수정 */
-    public void update(String startDate, String endDate) {
+    public void update(String startDate, String endDate, String savedTitle) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.savedTitle = savedTitle;
     }
 
 }

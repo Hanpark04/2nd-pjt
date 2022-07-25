@@ -38,4 +38,12 @@ public class ScheduleController {
         scheduleService.delete(saveId);
         return ResponseEntity.ok(saveId);
     }
+
+    /* READ - 일정 상세 조회 */
+    @GetMapping("/{saveId}")
+    public ResponseEntity read(@PathVariable int saveId) {
+        return ResponseEntity.ok(scheduleService.findById(saveId));
+    }
+
+
 }

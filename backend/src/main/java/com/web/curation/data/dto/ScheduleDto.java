@@ -21,6 +21,8 @@ public class ScheduleDto {
         private String startDate;
         private String endDate;
 
+        private String savedTitle;
+
         /* Dto -> Entity */
         public LikedCampList toEntity() {
             LikedCampList likedCampList = LikedCampList.builder()
@@ -29,6 +31,7 @@ public class ScheduleDto {
                     .totalCampList(campId)
                     .startDate(startDate)
                     .endDate(endDate)
+                    .savedTitle(savedTitle)
                     .build();
             return likedCampList;
         }
@@ -46,13 +49,16 @@ public class ScheduleDto {
         private final String startDate;
         private final String endDate;
 
-        /* Entity -> Dto*/
+        private final String savedTitle;
+
+        /* Entity -> Dto*/ // service로 빼자아아
         public Response(LikedCampList likedCampList) {
             this.saveId = likedCampList.getSaveId();
             this.userId = likedCampList.getUser().getUserId();
             this.campId = likedCampList.getTotalCampList().getCampId();
             this.startDate = likedCampList.getStartDate();
             this.endDate = likedCampList.getEndDate();
+            this.savedTitle = likedCampList.getSavedTitle();
         }
     }
 
