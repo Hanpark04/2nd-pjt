@@ -1,7 +1,7 @@
 import React from "react";
 import "./CampingDetail.scss";
 import temp from "@images/temp_1.jpeg";
-import map from "@images/map_temp.jpg";
+import Location from "@components/common/Location";
 
 function CampingDetail() {
   //   const [campingName, setCampingName] = useState("수완동 캠핑장");
@@ -57,14 +57,10 @@ function CampingDetail() {
               </div>
             </div>
             <div className="divide" />
-            <div className="detail_camp_text_map">
-              <div className="detail_camp_text_map_title notoBold fs-30">
-                약도
-              </div>
-              <div className="detail_camp_img_box notoMid fs-20">
-                <img src={map} alt="map" className="deta" />
-              </div>
-            </div>
+          </div>
+          <div className="detail_camp_map">
+            <div className="detail_camp_map_title notoBold fs-30">약도</div>
+            <Location />
           </div>
         </div>
       </div>
