@@ -60,7 +60,7 @@ function CampingDetail() {
           </div>
           <div className="detail_camp_map">
             <div className="detail_camp_map_title notoBold fs-30">약도</div>
-            <Location />
+            <Location className="detail_map_img" />
           </div>
         </div>
       </div>
