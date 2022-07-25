@@ -18,16 +18,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class CampService{
-    CampRepository campRepository;
-    LikedCampRepository likedCampRepository;
-    UserRepository userRepository;
+    private final CampRepository campRepository;
+    private final LikedCampRepository likedCampRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CampService(CampRepository campRepository) {
+    public CampService(CampRepository campRepository, LikedCampRepository likedCampRepository, UserRepository userRepository) {
         this.campRepository = campRepository;
+        this.likedCampRepository = likedCampRepository;
+        this.userRepository = userRepository;
     }
+
+
 
     public List<TotalCampList> getAllCamps() {
         return campRepository.findAll();
@@ -52,8 +56,8 @@ public class CampService{
     public Integer save(ScheduleDto.Request dto, int userId, int campId) {
         /* User 정보를 가져와 dto에 담아준다. */
         System.out.println("service");
-//        User user = userRepository.getById(userId);
-//        dto.setUserId(user);
+        User user = userRepository.getById(userId); // email로
+        dto.setUserId(user);
 
         TotalCampList camp = campRepository.getById(campId);
 //        System.out.println(camp.getFacltNm());

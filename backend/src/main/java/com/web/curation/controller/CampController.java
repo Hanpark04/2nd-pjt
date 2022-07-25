@@ -21,8 +21,6 @@ import java.util.Map;
 @RequestMapping("/camp")
 public class CampController {
 
-    private static final String SUCCESS = "success";
-    private static final String FAIL = "fail";
 
     @Autowired
     CampService campService;
@@ -44,29 +42,7 @@ public class CampController {
         return camp;
     }
 
-//    @PostMapping("/")
-//    public void addSchedule( @RequestBody @Validated LikedCampList likedCampList){
-//        System.out.println(likedCampList);
-//        campService.saveSchedule(likedCampList);
-//    }
 
-//    @PostMapping("/")
-//    public ResponseEntity<String> addSchedule(@RequestBody LikedCampList likedCampList){
-//        if(campService.saveSchedule(likedCampList)){
-//            return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-//    }
-//    @PostMapping(value="/")
-//    public LikedCampList addSchedule(@RequestBody ScheduleDto scheduleDto) {
-//        System.out.println("controller");
-//        System.out.println(scheduleDto.getSaveId());
-//        System.out.println(scheduleDto.getUserId());
-//        System.out.println(scheduleDto.getCampId());
-//        System.out.println(scheduleDto.getStartDate());
-//        System.out.println(scheduleDto.getEndDate());
-//        return campService.save(scheduleDto);
-//    }
     /* CREATE */
     @PostMapping("/")
 //    public ResponseEntity save(@RequestBody ScheduleDto.Request dto, @LoginUser UserDto.Response user ) {
@@ -77,7 +53,7 @@ public class CampController {
         System.out.println(dto.getSaveId());
         System.out.println(dto.getEndDate());
         System.out.println(dto.getStartDate());
-        return ResponseEntity.ok(campService.save(dto,2,3));
+        return ResponseEntity.ok(campService.save(dto,1,3));
     }
 
 

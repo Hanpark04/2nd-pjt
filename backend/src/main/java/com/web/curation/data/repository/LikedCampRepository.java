@@ -5,6 +5,7 @@ import com.web.curation.data.entity.LikedCampList;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LikedCampRepository  extends JpaRepository<LikedCampList, Integer> {
+    LikedCampList getById(int saveId);
 }
 
 

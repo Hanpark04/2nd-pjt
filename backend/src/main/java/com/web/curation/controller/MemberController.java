@@ -33,7 +33,7 @@ public class MemberController {
     }
 
     // 회원가입
-    @PostMapping("/register")
+        @PostMapping("/register")
     public ResponseEntity<String> registerMember(@RequestBody UserDto registerDto) throws Exception {
         LOGGER.debug("registerMember - 호출");
         LOGGER.debug("registerDto.getUsername() : {}", registerDto.getUserName());

@@ -36,4 +36,10 @@ public class LikedCampList {
 //        this.endDate = endDate;
 //    }
 
+    /* 게시글 수정 */
+    public void update(String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
 }
