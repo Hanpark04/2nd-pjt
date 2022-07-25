@@ -9,8 +9,12 @@ public interface PhotoService {
     List<PhotoDto> listPhoto();
     List<PhotoDto> bestPhoto();
 
+    List<PhotoDto> userPhoto(String email);
+
     boolean writePhoto(PhotoDto photoDto);
     boolean updatePhoto(PhotoDto photoDto);
     boolean deletePhoto(int boardId);
 
+    boolean pushLike(int boardId, String email);
+    boolean cancelLike(int boardId, String email);
 }

@@ -12,15 +12,19 @@ import java.util.List;
 @Builder
 public class PhotoDto {
 
+    private String profileImgPath;
+
     private int boardId;
-    // 프로필 이미지
     private String nickname;
     private String title;
     private String content;
+    private String hashtag;
     private LocalDateTime uploadDate;
     private int click;
-    private int like;
+    private long like;
     private int dType;
-    private List<String> tag;
+
+    private String fileName;
+    private String filePath;
 
 }
