@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<TodoList, Integer> {
-//    List<TodoList> getTodoListsBySaveId(LikedCampList likedCampList);
+    List<TodoList> getTodoListsByLikedCampListOrderByTodoId(LikedCampList likedCampList);
+
 }

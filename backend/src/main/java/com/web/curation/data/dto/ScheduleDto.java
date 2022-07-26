@@ -51,7 +51,7 @@ public class ScheduleDto {
 
         private final String savedTitle;
 
-        /* Entity -> Dto*/ // service로 빼자아아
+        /* Entity -> Dto*/
         public Response(LikedCampList likedCampList) {
             this.saveId = likedCampList.getSaveId();
             this.userId = likedCampList.getUser().getUserId();
@@ -61,6 +61,40 @@ public class ScheduleDto {
             this.savedTitle = likedCampList.getSavedTitle();
         }
     }
+
+    @Getter
+    public static class ScheduleDetail {
+        private final int saveId;
+        private final int userId;
+        private final int campId;
+        private final String startDate;
+        private final String endDate;
+        private final String savedTitle;
+        private final String campName;
+        private final String campAdd1;
+        private final String campAdd2;
+        private final String campTel;
+        private final String campMapX;
+        private final String campMapY;
+
+        /* Entity -> Dto*/
+        public ScheduleDetail(LikedCampList likedCampList) {
+            this.saveId = likedCampList.getSaveId();
+            this.userId = likedCampList.getUser().getUserId();
+            this.campId = likedCampList.getTotalCampList().getCampId();
+            this.startDate = likedCampList.getStartDate();
+            this.endDate = likedCampList.getEndDate();
+            this.savedTitle = likedCampList.getSavedTitle();
+            this.campName = likedCampList.getTotalCampList().getFacltNm();
+            this.campAdd1 = likedCampList.getTotalCampList().getAddr1();
+            this.campAdd2 = likedCampList.getTotalCampList().getAddr2();
+            this.campTel = likedCampList.getTotalCampList().getTel();
+            this.campMapX = likedCampList.getTotalCampList().getMapX();
+            this.campMapY = likedCampList.getTotalCampList().getMapY();
+        }
+    }
+
+
 
 
 }

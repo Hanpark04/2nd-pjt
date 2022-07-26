@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +29,10 @@ public class LikedCampList {
     private String endDate;
 
     private String savedTitle;
+
+    @OneToMany(mappedBy = "likedCampList", cascade = CascadeType.ALL)
+    @OrderBy("todoId")
+    private List<TodoList> todoLists;
 
 
     /* 게시글 수정 */
