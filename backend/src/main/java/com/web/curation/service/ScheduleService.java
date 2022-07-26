@@ -58,29 +58,29 @@ public class ScheduleService {
         return new ScheduleDto.Response(likedCampList);
     }
 
-
-    public ScheduleDto.Response
-
-    public List<PhotoDto> bestPhoto() {
-        List<Community> listCommunity = communityRepository.findTop8ByOrderByClickDesc();
-        List<PhotoDto> listPhoto = new ArrayList<>();
-
-        for(Community community : listCommunity){
-
-            PhotoDto photoDto = new PhotoDto();
-            photoDto.setBoardId(community.getBoardId());
-            photoDto.setTitle(community.getTitle());
-            photoDto.setNickname(community.getUser().getNickname());
-            photoDto.setContent(community.getContent());
-            photoDto.setUploadDate(community.getUploadDate());
-            photoDto.setDType(community.getDType());
-            photoDto.setClick(community.getClick());
-
-            listPhoto.add(photoDto);
-        }
-
-        return listPhoto;
-    }
+//
+//    public ScheduleDto.Response
+//
+//    public List<PhotoDto> bestPhoto() {
+//        List<Community> listCommunity = communityRepository.findTop8ByOrderByClickDesc();
+//        List<PhotoDto> listPhoto = new ArrayList<>();
+//
+//        for(Community community : listCommunity){
+//
+//            PhotoDto photoDto = new PhotoDto();
+//            photoDto.setBoardId(community.getBoardId());
+//            photoDto.setTitle(community.getTitle());
+//            photoDto.setNickname(community.getUser().getNickname());
+//            photoDto.setContent(community.getContent());
+//            photoDto.setUploadDate(community.getUploadDate());
+//            photoDto.setDType(community.getDType());
+//            photoDto.setClick(community.getClick());
+//
+//            listPhoto.add(photoDto);
+//        }
+//
+//        return listPhoto;
+//    }
 
 
 

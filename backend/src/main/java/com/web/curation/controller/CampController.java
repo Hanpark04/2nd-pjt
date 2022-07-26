@@ -53,7 +53,7 @@ public class CampController {
         System.out.println(dto.getSaveId());
         System.out.println(dto.getEndDate());
         System.out.println(dto.getStartDate());
-        return ResponseEntity.ok(campService.save(dto,1,3));
+        return ResponseEntity.ok(campService.save(dto,1,1));
     }
 
 
