@@ -30,5 +30,22 @@ public class TodoService {
         return todoList.getTodoId();
     }
 
+    /* UPDATE */
+    @Transactional
+    public void update(int todoId, TodoDto.Request dto) {
+        TodoList todoList = todoRepository.findById(todoId).orElseThrow(() ->
+                new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + todoId));
+
+        todoList.update(dto.getTask(), dto.isDone());
+    }
+
+    /* DELETE */
+    @Transactional
+    public void delete(int todoId) {
+        TodoList todoList = todoRepository.findById(todoId).orElseThrow(() ->
+                new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + todoId));
+
+        todoRepository.delete(todoList);
+    }
 
 }

@@ -17,4 +17,18 @@ public class TodoController {
     public ResponseEntity save(@RequestBody TodoDto.Request dto) {
         return ResponseEntity.ok(todoService.save(5, dto));
     }
+
+    /* UPDATE */
+    @PutMapping({"/{todoId}"})
+    public ResponseEntity update(@PathVariable int todoId, @RequestBody TodoDto.Request dto) {
+        todoService.update(todoId, dto);
+        return ResponseEntity.ok(todoId);
+    }
+
+    /* DELETE */
+    @DeleteMapping("/{todoId}")
+    public ResponseEntity delete(@PathVariable int todoId) {
+        todoService.delete(todoId);
+        return ResponseEntity.ok(todoId);
+    }
 }

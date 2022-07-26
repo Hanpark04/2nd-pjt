@@ -24,5 +24,10 @@ public class TodoList {
     @Column(nullable = false)
     private boolean done;
 
+    /* 댓글 수정 */
+    public void update(String task, boolean done) {
+        this.task = task;
+        this.done = done;
+    }
 
 }
