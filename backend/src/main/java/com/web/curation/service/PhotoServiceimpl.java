@@ -141,8 +141,6 @@ public class PhotoServiceimpl implements PhotoService {
         // file 이미지 변경하기
         CommunityFile communityFile = communityFileRepository.findByCommunity(community);
 
-        communityFileRepository.delete(communityFile);
-
         communityFile.setCommunity(community);
         communityFile.setName(photoDto.getFileName());
         communityFile.setFilePath(photoDto.getFilePath());

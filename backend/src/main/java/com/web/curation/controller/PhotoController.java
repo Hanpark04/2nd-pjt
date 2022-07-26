@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,8 +45,9 @@ public class PhotoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> writePhoto(@RequestBody PhotoDto photoDto) {
+    public ResponseEntity<String> writePhoto(PhotoDto photoDto, MultipartFile file) {
         LOGGER.info("writePhoto - 호출");
+        photoDto.setFilePath(file.getOriginalFilename());
         if (photoService.writePhoto(photoDto)) {
             return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         }
@@ -53,8 +55,11 @@ public class PhotoController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updatePhoto(@RequestBody PhotoDto photoDto) {
+    public ResponseEntity<String> updatePhoto(PhotoDto photoDto, MultipartFile file) {
         LOGGER.info("updatePhoto - 호출");
+//        LOGGER.info(photoDto.getTitle());
+
+        photoDto.setFilePath(file.getOriginalFilename());
         if (photoService.updatePhoto(photoDto)) {
             return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         }
