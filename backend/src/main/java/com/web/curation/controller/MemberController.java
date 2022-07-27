@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/user")
 public class MemberController {
 
@@ -42,7 +43,7 @@ public class MemberController {
     @PostMapping("/register")
     public ResponseEntity<String> registerMember(@RequestBody UserDto registerDto) {
         LOGGER.debug("registerMember - 호출");
-        LOGGER.debug("registerDto.getUsername() : {}", registerDto.getUserName());
+//        LOGGER.debug("registerDto.getUsername() : {}", registerDto.getUserName());
 
         if (memberService.register(registerDto)) {
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
