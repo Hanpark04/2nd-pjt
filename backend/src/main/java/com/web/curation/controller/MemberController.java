@@ -24,7 +24,7 @@ import java.util.UUID;
 @CrossOrigin("*")
 @RequestMapping("/user")
 public class MemberController {
-
+    
     private final Logger LOGGER = LoggerFactory.getLogger(MemberController.class);
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
@@ -63,9 +63,10 @@ public class MemberController {
 
             if (loginUser != null) {
 
-                LOGGER.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userDto.getEmail(), loginUser.getToken());
+                LOGGER.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userDto.getEmail(), loginUser.getAccessToken());
 
-                resultMap.put("access-token", loginUser.getToken());
+                resultMap.put("access-token", loginUser.getAccessToken());
+                resultMap.put("access-token", loginUser.getRefreshToken());
                 resultMap.put("message", SUCCESS);
 
                 status = HttpStatus.ACCEPTED;
@@ -80,6 +81,31 @@ public class MemberController {
             LOGGER.error("로그인 실패 : {}", e);
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    // 리프레시 토큰 확인 및 액세스 토큰 발급
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String,Object>> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+
+        String token = request.getHeader("refresh-token");
+        if(jwtTokenProvider.validateToken(token)){
+            resultMap.put("message", "expired");
+            status = HttpStatus.UNAUTHORIZED;
+            return new ResponseEntity<>(resultMap, status);
+        }
+
+        if(token.equals(memberService.getRefreshToken(userDto.getEmail()))){
+            String accessToken = jwtTokenProvider.createToken(userDto.getEmail(), memberService.getRole(userDto.getEmail()));
+            resultMap.put("access-token", accessToken);
+            resultMap.put("message", SUCCESS);
+        } else{
+            resultMap.put("message", FAIL);
+            status = HttpStatus.UNAUTHORIZED;
         }
 
         return new ResponseEntity<>(resultMap, status);

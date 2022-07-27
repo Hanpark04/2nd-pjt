@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
@@ -82,7 +83,13 @@ public class MemberServiceImpl implements MemberService {
 
         UserDto userDto = new UserDto();
 
-        userDto.setToken(jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoleType()));
+        userDto.setAccessToken(jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoleType()));
+        String refresh = jwtTokenProvider.createRefreshToken(String.valueOf(user.getEmail()));
+        userDto.setRefreshToken(refresh);
+
+        // 리프레시 토큰 저장
+        user.setRefreshToken(refresh);
+        userRepository.save(user);
 
         return userDto;
     }
@@ -104,6 +111,18 @@ public class MemberServiceImpl implements MemberService {
         userDto.setAuth(String.valueOf(user.getRoleType()));
 
         return userDto;
+    }
+
+    @Override
+    public String getRefreshToken(String email) {
+        String refresh = userRepository.getByEmail(email).getRefreshToken();
+        return refresh;
+    }
+
+    @Override
+    public RoleType getRole(String email) {
+        RoleType role = userRepository.getByEmail(email).getRoleType();
+        return role;
     }
 
     // 회원 탈퇴

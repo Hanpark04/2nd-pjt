@@ -32,7 +32,8 @@ public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String secretKey = "secretKey";
-    private final long tokenValidMillisecond = 1000L * 60 * 60; /// 1시간 유효 토큰
+    private final long accesTokenValidMillisecond = 1000L * 60 * 60; /// 1시간 유효 토큰
+    private final long refreshTokenValidMillisecond = 1000L * 60 * 60; /// 1시간 유효 토큰
 
     // JwtTokenProvider 시작될 때 초기화
     @PostConstruct
@@ -42,7 +43,7 @@ public class JwtTokenProvider {
         LOGGER.info("[init] JwtTokenProvider 내 secretKey 초기화 완료");
     }
 
-    //JWT 토큰 생성
+    //JWT access-token 생성
     public String createToken(String email, RoleType roleType){
         LOGGER.info("[createToken] 토큰 생성 시작");
         Claims claims = Jwts.claims().setSubject(email);
@@ -53,11 +54,30 @@ public class JwtTokenProvider {
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidMillisecond))
+                .setExpiration(new Date(now.getTime() + accesTokenValidMillisecond))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 
         LOGGER.info("[createToken] 토큰 생성 완료");
+        return token;
+    }
+
+    //JWT access-token 생성
+    public String createRefreshToken(String email){
+        LOGGER.info("[createRefreshToken] 토큰 생성 시작");
+        Claims claims = Jwts.claims().setSubject(email);
+
+        claims.put("role", "");
+        Date now = new Date();
+
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + refreshTokenValidMillisecond))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
+        LOGGER.info("[createRefreshToken] 토큰 생성 완료");
         return token;
     }
 
@@ -69,8 +89,6 @@ public class JwtTokenProvider {
 
         LOGGER.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}", userDetails.getUsername());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-
-
     }
 
     // JWT 토큰에서 회원 구별 정보 추출
