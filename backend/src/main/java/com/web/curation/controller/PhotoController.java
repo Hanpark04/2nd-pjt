@@ -58,10 +58,10 @@ public class PhotoController {
         LOGGER.info("writePhoto - 호출");
 
         // 이미지 파일이 아닐 때
-//        if(file.getContentType().startsWith("image") == false{
-//            LOGGER.warn("this file is not image type");
-//            return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
-//        }
+        if(file.getContentType().startsWith("image") == false){
+            LOGGER.warn("this file is not image type");
+            return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+        }
 
         //브라우저에 따라 업로드하는 파일의 이름은 전체경로일 수도 있고(Internet Explorer),
         //단순히 파일의 이름만을 의미할 수도 있습니다.(chrome browser)

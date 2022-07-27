@@ -136,16 +136,29 @@ public class MemberServiceImpl implements MemberService {
         user.setNickname(userDto.getNickname());
         user.setTel(userDto.getTel());
         user.setBirth(userDto.getBirth());
-        user.setProfileImg(userDto.getProfileImg());
 
         userRepository.save(user);
 
-        if(user.getNickname() == userDto.getNickname() && user.getTel() == userDto.getTel()
-                && user.getBirth() == userDto.getBirth() && user.getProfileImg() == userDto.getProfileImg()){
+        if(user.getNickname().equals(userDto.getNickname()) && user.getTel().equals(userDto.getTel())
+                && user.getBirth().equals(userDto.getBirth())){
             return true;
         }
         return false;
 
+    }
+
+    @Override
+    public boolean updateUserProfile(UserDto userDto) {
+        User user = userRepository.getByEmail(userDto.getEmail());
+
+        user.setProfileImg(userDto.getProfileImg());
+
+        userRepository.save(user);
+
+        if(user.getProfileImg().equals(userDto.getProfileImg())){
+            return true;
+        }
+        return false;
     }
 
     // 비밀번호 변경
