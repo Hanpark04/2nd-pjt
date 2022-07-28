@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/camp")
 public class CampController {
     private final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
@@ -36,7 +37,7 @@ public class CampController {
 
     /* campList READ */
     @GetMapping()
-    public List<TotalCampList> getAllCamps(){
+    public List<CampDto.CampList> getAllCamps(){
         return campService.getAllCamps();
     }
 
