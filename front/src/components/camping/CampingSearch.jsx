@@ -1,5 +1,6 @@
 import React from "react";
 import "./CampingSearch.scss";
+import { v4 } from "uuid";
 
 export function CampingSearchLoca() {
   return (
@@ -64,7 +65,7 @@ export function CampingSearchTag() {
     "장비대여"
   ];
   const tagList = tags.map(tag => (
-    <button type="button" className="fs-18 notoMid">
+    <button type="button" className="fs-18 notoMid" key={v4()}>
       {tag}
     </button>
   ));

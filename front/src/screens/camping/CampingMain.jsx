@@ -3,7 +3,7 @@ import CampingList from "@components/camping/CampingList";
 import "./CampingMain.scss";
 import banner from "@images/temp_1.jpeg"; // banner 이미지
 import search from "@images/icon/search_black_24dp.svg";
-
+import { v4 } from "uuid";
 import {
   CampingSearchLoca,
   CampingSearchTag
@@ -15,10 +15,17 @@ function CampingMain() {
   const [visibleLoca, setVisibleLoca] = useState(false);
   const tops = ["싸피 캠핑장", "연관검색어2", "연관검색어3", "연관검색어4"];
   const topList = tops.map(top => (
-    <div className="main_title_left_word_detail flex align-center justify-center">
+    <div
+      className="main_title_left_word_detail flex align-center justify-center"
+      key={v4()}
+    >
       {top}
     </div>
   ));
+
+  // camplist props
+  // campInfos  = [];
+
   return (
     <div className="container flex justify-center">
       <div className="main">
@@ -89,8 +96,9 @@ function CampingMain() {
         <div className="main_list flex align-center">
           <p className="main_list_title fs-32 notoBold">캠핑장 리스트</p>
           <select type="text" className="main_list_sort fs-22 notoMid">
-            <option selected>최신순</option>
+            <option selected>거리순</option>
             <option>인기순</option>
+            <option>가나다순</option>
           </select>
         </div>
         <div className="divide" />

@@ -1,33 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./CampingCard.scss";
-// import PropTypes from "prop-types";
-import coverImg from "@images/temp_1.jpeg"; // url string으로 가져오기
+// import coverImg from "@images/temp_1.jpeg"; // url string으로 가져오기
 import placeIcon from "@images/icon/place_black_24dp.svg";
 
-function CampingCard() {
-  const name = "수완동 캠핑장";
-  const place = "광주광역시 광산구 수완동 1111-1111";
-  const url = "https://naver.com";
-  //   const navigate = useNavigate();
-  //   const moveDetail = () => {
-  //     navigate("/camping/detail"); // 상세페이지 이동
-  //     console.log("clicked");
-  //   };
-
+function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
   const moveSite = () => {
-    window.open(`${url}`);
+    window.open(`${homepage}`);
+    // console.log("movesite");
+    console.log(homepage);
   };
 
+  const detailUrl = `/camping/detail/${campId}`;
+
   return (
-    <div className="camping_card flex column">
+    <Link to={detailUrl} className="camping_card flex column">
       <div className="camping_card_img">
-        <img className="camping_card_img_cover" src={coverImg} alt="coverImg" />
+        <img
+          className="camping_card_img_cover"
+          src={firstImageUrl}
+          alt="coverImg"
+        />
       </div>
 
       <div className="camping_card_info flex align-center">
         <div className="camping_card_info_txt">
-          <p className="camping_card_info_txt_name notoBold fs-30">{name}</p>
+          <p className="camping_card_info_txt_name notoBold fs-30">{facltNm}</p>
           <div className="camping_card_info_txt_place flex align-center">
             <Link to="/">
               <img
@@ -38,7 +36,8 @@ function CampingCard() {
               />
             </Link>
             <div className="camping_card_info_txt_place_text notoMid fs-22">
-              {place}
+              {/* {address} */}
+              {addr1}
             </div>
           </div>
         </div>
@@ -60,13 +59,13 @@ function CampingCard() {
         </div>
       </div>
       <div className="divide" />
-    </div>
+    </Link>
     // <>dd</>
   );
 }
 
-// Campingcamping_Card.propTypes = {
-//   data: PropTypes.obectOf(PropTypes.string).isRequired
+// CampingCard.PropTypes = {
+//   campingInfo : PropTypes.objectOf(PropTypes.string).isRequired
 // };
 
 export default CampingCard;

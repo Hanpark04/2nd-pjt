@@ -94,7 +94,7 @@ function Router() {
 
         <Route path="/camping/*">
           <Route index element={<CampingMain />} />
-          <Route path="detail" element={<CampingDetail />} />
+          <Route path="detail/:id" element={<CampingDetail />} />
         </Route>
 
         <Route path="/plan/*">
