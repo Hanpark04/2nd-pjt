@@ -1,7 +1,14 @@
 package com.web.curation.data.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 @Entity
 public class TalkContent {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

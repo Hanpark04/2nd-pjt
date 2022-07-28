@@ -1,16 +1,22 @@
 package com.web.curation.data.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class ThumbnailFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int fileId;
-
-    @OneToOne
-    @JoinColumn(name = "talkId")
-    private Community community;
+    private int thumbnailId;
 
     @Column(nullable = false)
     private String name;
