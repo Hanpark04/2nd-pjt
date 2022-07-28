@@ -104,7 +104,7 @@ public class PhotoController {
         }
 
         photoDto.setFilePath(savePath.toString());
-        if (photoService.writePhoto(photoDto) == 0) {
+        if (photoService.writePhoto(photoDto) != 0) {
             resultMap.put("message", SUCCESS);
             resultMap.put("boardId", photoService.writePhoto(photoDto));
 
