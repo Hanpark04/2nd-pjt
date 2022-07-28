@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,7 +23,6 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/user")
 public class MemberController {
     
@@ -53,7 +54,7 @@ public class MemberController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto userDto) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto userDto, HttpServletResponse response) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
 
@@ -65,11 +66,20 @@ public class MemberController {
 
                 LOGGER.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userDto.getEmail(), loginUser.getAccessToken());
 
-                resultMap.put("access-token", loginUser.getAccessToken());
-                resultMap.put("access-token", loginUser.getRefreshToken());
+                resultMap.put("accessToken", loginUser.getAccessToken());
                 resultMap.put("message", SUCCESS);
-
                 status = HttpStatus.ACCEPTED;
+
+
+                // 리프레시 토큰 쿠키에 저장하기
+                resultMap.put("refreshToken", loginUser.getRefreshToken());
+                Cookie cookie = new Cookie("refreshToken", loginUser.getRefreshToken());
+                cookie.setMaxAge(7 * 24 * 60 * 60);
+                cookie.setSecure(true);
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+
+                response.addCookie(cookie);
 
             } else {
 
@@ -86,30 +96,30 @@ public class MemberController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    // 리프레시 토큰 확인 및 액세스 토큰 발급
-    @PostMapping("/refresh")
-    public ResponseEntity<Map<String,Object>> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request){
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.ACCEPTED;
-
-        String token = request.getHeader("refresh-token");
-        if(jwtTokenProvider.validateToken(token)){
-            resultMap.put("message", "expired");
-            status = HttpStatus.UNAUTHORIZED;
-            return new ResponseEntity<>(resultMap, status);
-        }
-
-        if(token.equals(memberService.getRefreshToken(userDto.getEmail()))){
-            String accessToken = jwtTokenProvider.createToken(userDto.getEmail(), memberService.getRole(userDto.getEmail()));
-            resultMap.put("access-token", accessToken);
-            resultMap.put("message", SUCCESS);
-        } else{
-            resultMap.put("message", FAIL);
-            status = HttpStatus.UNAUTHORIZED;
-        }
-
-        return new ResponseEntity<>(resultMap, status);
-    }
+//    // 리프레시 토큰 확인 및 액세스 토큰 발급
+//    @PostMapping("/refresh")
+//    public ResponseEntity<Map<String,Object>> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request){
+//        Map<String, Object> resultMap = new HashMap<>();
+//        HttpStatus status = HttpStatus.ACCEPTED;
+//
+//        String token = request.getHeader("refresh-token");
+//        if(jwtTokenProvider.validateToken(token)){
+//            resultMap.put("message", "expired");
+//            status = HttpStatus.UNAUTHORIZED;
+//            return new ResponseEntity<>(resultMap, status);
+//        }
+//
+//        if(token.equals(memberService.getRefreshToken(userDto.getEmail()))){
+//            String accessToken = jwtTokenProvider.createToken(userDto.getEmail(), memberService.getRole(userDto.getEmail()));
+//            resultMap.put("access-token", accessToken);
+//            resultMap.put("message", SUCCESS);
+//        } else{
+//            resultMap.put("message", FAIL);
+//            status = HttpStatus.UNAUTHORIZED;
+//        }
+//
+//        return new ResponseEntity<>(resultMap, status);
+//    }
 
     // 회원정보 가져오기
     @GetMapping("/{email}")
@@ -120,23 +130,16 @@ public class MemberController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
 
-        if (jwtTokenProvider.validateToken(request.getHeader("access-token"))) {
-            LOGGER.info("사용 가능한 토큰!!!");
-            try {
+        try {
 //				로그인 사용자 정보.
-                UserDto userDto = memberService.userInfo(email);
-                resultMap.put("userInfo", userDto);
-                resultMap.put("message", SUCCESS);
-                status = HttpStatus.ACCEPTED;
-            } catch (Exception e) {
-                LOGGER.error("정보조회 실패 : {}", e);
-                resultMap.put("message", e.getMessage());
-                status = HttpStatus.INTERNAL_SERVER_ERROR;
-            }
-        } else {
-            LOGGER.error("사용 불가능 토큰!!!");
-            resultMap.put("message", FAIL);
+            UserDto userDto = memberService.userInfo(email);
+            resultMap.put("userInfo", userDto);
+            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            LOGGER.error("정보조회 실패 : {}", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
         }
 
         return new ResponseEntity<>(resultMap, status);

@@ -50,8 +50,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDateTime joinDate;
 
-    private String refreshToken;
-
     // 권한 목록 List로 저장
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    @Builder.Default

@@ -2,8 +2,10 @@ package com.web.curation.service;
 
 import com.web.curation.config.security.JwtTokenProvider;
 import com.web.curation.data.dto.UserDto;
+import com.web.curation.data.entity.RefreshToken;
 import com.web.curation.data.entity.RoleType;
 import com.web.curation.data.entity.User;
+import com.web.curation.data.repository.RefreshTokenRepository;
 import com.web.curation.data.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -21,13 +21,17 @@ public class MemberServiceImpl implements MemberService {
     private final Logger LOGGER = LoggerFactory.getLogger(MemberServiceImpl.class);
 
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberServiceImpl(UserRepository userRepository, JwtTokenProvider jwtTokenProvider,
-                           PasswordEncoder passwordEncoder) {
+    public MemberServiceImpl(UserRepository userRepository,
+                             RefreshTokenRepository refreshTokenRepository,
+                             JwtTokenProvider jwtTokenProvider,
+                             PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
     }
@@ -83,13 +87,16 @@ public class MemberServiceImpl implements MemberService {
 
         UserDto userDto = new UserDto();
 
-        userDto.setAccessToken(jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoleType()));
+        String access = jwtTokenProvider.createAccessToken(String.valueOf(user.getEmail()));
         String refresh = jwtTokenProvider.createRefreshToken(String.valueOf(user.getEmail()));
+
+        userDto.setAccessToken(access);
         userDto.setRefreshToken(refresh);
 
         // 리프레시 토큰 저장
-        user.setRefreshToken(refresh);
-        userRepository.save(user);
+        RefreshToken refreshToken = RefreshToken.createToken(user.getEmail(), refresh);
+
+        refreshTokenRepository.save(refreshToken);
 
         return userDto;
     }
@@ -115,7 +122,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String getRefreshToken(String email) {
-        String refresh = userRepository.getByEmail(email).getRefreshToken();
+
+        String refresh = refreshTokenRepository.findByUserId(email).get().getToken();
+
         return refresh;
     }
 
