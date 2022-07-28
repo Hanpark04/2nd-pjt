@@ -7,21 +7,19 @@ import placeIcon from "@images/icon/place_black_24dp.svg";
 function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
   const moveSite = () => {
     window.open(`${homepage}`);
-    // console.log("movesite");
-    console.log(homepage);
   };
 
   const detailUrl = `/camping/detail/${campId}`;
 
   return (
-    <Link to={detailUrl} className="camping_card flex column">
-      <div className="camping_card_img">
+    <div className="camping_card flex column">
+      <Link to={detailUrl} className="camping_card_img">
         <img
           className="camping_card_img_cover"
           src={firstImageUrl}
           alt="coverImg"
         />
-      </div>
+      </Link>
 
       <div className="camping_card_info flex align-center">
         <div className="camping_card_info_txt">
@@ -36,7 +34,6 @@ function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
               />
             </Link>
             <div className="camping_card_info_txt_place_text notoMid fs-22">
-              {/* {address} */}
               {addr1}
             </div>
           </div>
@@ -59,7 +56,7 @@ function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
         </div>
       </div>
       <div className="divide" />
-    </Link>
+    </div>
     // <>dd</>
   );
 }

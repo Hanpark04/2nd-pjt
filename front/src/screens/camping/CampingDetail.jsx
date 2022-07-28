@@ -1,35 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CampingDetail.scss";
 import temp from "@images/temp_1.jpeg";
 import Location from "@components/common/Location";
+import { useParams } from "react-router-dom";
+import { campDetailInfo } from "../../apis/camp";
 
 function CampingDetail() {
-  //   const [campingName, setCampingName] = useState("수완동 캠핑장");
-  const campingName = "수완동 캠핑장";
-  const campingIntro = "한줄 소개소개소개";
-  const address = "광주광역시 광산구 수완동 1111-1111 ";
-  const phone = "010-0000-0000";
   const distance = "77";
-  const url = "https://naver.com";
 
-  // 사이츠 이동
+  const [campInfo, setCampInfo] = useState();
+  const { id: campId } = useParams(); // 파라미터 정보 가져오기
   const moveSite = () => {
-    window.open(`${url}`);
+    window.open(`${campInfo.homepage}`);
   };
+
+  const getCampDetailInfo = async () => {
+    const res = await campDetailInfo(campId);
+    setCampInfo(res);
+  };
+
+  useEffect(() => {
+    getCampDetailInfo(); // 초기에 정보 받아오기
+  }, [campId]);
+
   return (
     <div className="container flex justify-center">
       <div className="detail">
-        <div className="detail_title notoBold fs-52">{campingName}</div>
+        <div className="detail_title notoBold fs-52">{campInfo.facltNm}</div>
         <div className="detail_camp">
           <div className="detail_camp_img_box">
-            <img src={temp} alt="campingImage" title="test" />
+            {campInfo.firstImageUrl && (
+              <img
+                src={campInfo.firstImageUrl}
+                alt="campingImage"
+                title="test"
+              />
+            )}
+            {!campInfo.firstImageUrl && (
+              <img src={temp} alt="campingImage" title="test" />
+            )}
           </div>
-          <div className="detail_camp_intro notoBold fs-30">{campingIntro}</div>
+          <div className="detail_camp_intro notoBold fs-30">
+            {campInfo.lineIntro}
+          </div>
           <div className="detail_camp_sub notoMid fs-20 flex">
-            <div className="detail_camp_sub_add">{address}</div>
+            <div className="detail_camp_sub_add">{campInfo.addr1}</div>
             <div className="detail_camp_sub_distance">~{distance}km</div>
           </div>
-          <div className="detail_camp_sub notoMid fs-20">{phone}</div>
+          <div className="detail_camp_sub notoMid fs-20">{campInfo.tel}</div>
           <div className="detail_camp_btn flex justify-center">
             <button
               type="button"
@@ -52,8 +70,12 @@ function CampingDetail() {
                 기본 정보
               </div>
               <div className="detail_camp_text_info_sub notoMid fs-20">
-                <div className="detail_camp_text_info_sub_basic">기본 시설</div>
-                <div className="detail_camp_text_info_sub_basic">부대 시설</div>
+                <div className="detail_camp_text_info_sub_basic">
+                  기본 시설 : {campInfo.sbrsCl}
+                </div>
+                <div className="detail_camp_text_info_sub_basic">
+                  부대 시설 : {campInfo.posblFcltyCl}
+                </div>
               </div>
             </div>
             <div className="divide" />
