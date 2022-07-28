@@ -76,7 +76,6 @@ public class PhotoServiceimpl implements PhotoService {
         // 조회수
         photoDto.setClick(community.getClick());
 
-
         CommunityFile communityFile = communityFileRepository.findByCommunity(community);
         photoDto.setFileName(communityFile.getName());
         photoDto.setFilePath(communityFile.getFilePath());

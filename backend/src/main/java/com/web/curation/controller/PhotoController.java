@@ -104,9 +104,11 @@ public class PhotoController {
         }
 
         photoDto.setFilePath(savePath.toString());
-        if (photoService.writePhoto(photoDto) != 0) {
+
+        int result = photoService.writePhoto(photoDto);
+        if (result != 0) {
             resultMap.put("message", SUCCESS);
-            resultMap.put("boardId", photoService.writePhoto(photoDto));
+            resultMap.put("boardId", result);
 
             return new ResponseEntity<>(resultMap, status);
         }
