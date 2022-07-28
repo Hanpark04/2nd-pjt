@@ -52,7 +52,7 @@ public class PhotoController {
     @GetMapping("/detail/{boardId}")
     public ResponseEntity<PhotoDto> detailPhoto(@PathVariable String boardId) {
         LOGGER.info("detailPhoto 호출");
-        return new ResponseEntity<PhotoDto>(photoService.detailPhoto(Integer.parseInt(boardId)), HttpStatus.OK);
+        return new ResponseEntity<>(photoService.detailPhoto(Integer.parseInt(boardId)), HttpStatus.OK);
     }
 
     @GetMapping("{email}")

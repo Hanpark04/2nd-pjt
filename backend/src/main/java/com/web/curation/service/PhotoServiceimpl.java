@@ -81,8 +81,7 @@ public class PhotoServiceimpl implements PhotoService {
         photoDto.setFileName(communityFile.getName());
         photoDto.setFilePath(communityFile.getFilePath());
 
-
-        return null;
+        return photoDto;
     }
 
     private List<PhotoDto> getPhotoDtos(List<Community> listCommunity) {
