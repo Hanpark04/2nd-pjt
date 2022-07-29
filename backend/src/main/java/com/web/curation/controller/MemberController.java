@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/user")
 public class MemberController {
     
@@ -71,6 +73,15 @@ public class MemberController {
                 status = HttpStatus.ACCEPTED;
 
 
+                ResponseCookie responseCookieookie = ResponseCookie.from("sameSiteCookie", "sameSiteCookieValue")
+                        .domain("ifuwanna.tistory.com")
+                        .sameSite("None")
+                        .secure(true)
+                        .path("/")
+                        .build();
+                response.addHeader("Set-Cookie", responseCookieookie.toString());
+
+
                 // 리프레시 토큰 쿠키에 저장하기
                 resultMap.put("refreshToken", loginUser.getRefreshToken());
                 Cookie cookie = new Cookie("refreshToken", loginUser.getRefreshToken());
@@ -80,6 +91,8 @@ public class MemberController {
                 cookie.setPath("/");
 
                 response.addCookie(cookie);
+
+
 
             } else {
 
