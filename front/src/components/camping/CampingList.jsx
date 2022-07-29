@@ -13,6 +13,7 @@ function CampingList() {
       const res = await getCamplist();
       // setCampList(res.slice(10));
       setCampList(res);
+      console.log(res);
     }
     getAndSetCampList();
   }, []);

@@ -7,7 +7,7 @@ export const getCamplist = async body => {
 
 export const campDetailInfo = async campId => {
   const res = await API.get(`/camp/${campId}`);
-  console.log(res.data);
+  // console.log(res.data);
   return res.data;
 };
 export const ex = () => {};

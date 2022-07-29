@@ -97,8 +97,8 @@ function CampingMain() {
           <p className="main_list_title fs-32 notoBold">캠핑장 리스트</p>
           <select type="text" className="main_list_sort fs-22 notoMid">
             <option selected>거리순</option>
-            <option>인기순</option>
-            <option>가나다순</option>
+            <option value="favorite">인기순</option>
+            <option value="word">가나다순</option>
           </select>
         </div>
         <div className="divide" />
