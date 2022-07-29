@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/photo")
 public class PhotoController {
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
@@ -55,7 +54,7 @@ public class PhotoController {
     private String uploadPath = "/home/ubuntu/app/photo/";
 
     @PostMapping
-    public ResponseEntity<String> writePhoto(PhotoDto photoDto, MultipartFile file) {
+    public ResponseEntity<String> writePhoto(@RequestPart("data") PhotoDto photoDto, @RequestPart MultipartFile file) {
         LOGGER.info("writePhoto - 호출");
 
         // 이미지 파일이 아닐 때

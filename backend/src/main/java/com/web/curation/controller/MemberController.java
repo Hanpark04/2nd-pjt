@@ -75,8 +75,8 @@ public class MemberController {
                 resultMap.put("refreshToken", loginUser.getRefreshToken());
                 Cookie cookie = new Cookie("refreshToken", loginUser.getRefreshToken());
                 cookie.setMaxAge(7 * 24 * 60 * 60);
-                cookie.setSecure(true);
-                cookie.setHttpOnly(true);
+//                cookie.setSecure(true);
+//                cookie.setHttpOnly(true);
                 cookie.setPath("/");
 
                 response.addCookie(cookie);

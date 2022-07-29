@@ -60,8 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     // 리프레시 토큰 쿠키에 저장하기
                     Cookie cookie = new Cookie("refreshToken", newRefresh);
                     cookie.setMaxAge(7 * 24 * 60 * 60);
-                    cookie.setSecure(true);
-                    cookie.setHttpOnly(true);
+//                    cookie.setSecure(true);
+//                    cookie.setHttpOnly(true);
                     cookie.setPath("/");
 
                     servletResponse.addCookie(cookie);

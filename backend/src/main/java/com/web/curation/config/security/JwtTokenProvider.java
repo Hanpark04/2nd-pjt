@@ -35,7 +35,7 @@ public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String secretKey = "secretKey";
-    private final long accessTokenValidMillisecond = 1000L * 60; // 1시간 유효 토큰
+    private final long accessTokenValidMillisecond = 1000L * 60 * 3; // 1시간 유효 토큰
     private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 14; // 2주 유효 토큰
 
     // JwtTokenProvider 시작될 때 초기화
@@ -115,17 +115,18 @@ public class JwtTokenProvider {
     // 리프레시 토큰은 쿠키에서 가져와야 됨!!
     public String resolveRefreshToken(HttpServletRequest request) throws Exception {
         String refreshToken = getCookie(request, "refreshToken");
-        LOGGER.info("refreshToken");
         LOGGER.info("[resolveRefreshToken] 쿠키에서 Token 값 추출");
         return refreshToken;
     }
 
     // 쿠키에 있는 값 가져오기
-    public static String getCookie(HttpServletRequest request, String key) throws Exception {
+    public String getCookie(HttpServletRequest request, String key) throws Exception {
+        LOGGER.info("쿠키에 있는 값 가져오겠다..");
         Cookie[] cookies = request.getCookies();
         if(key == null) return null;
         String value = "";
         if(cookies != null){
+            LOGGER.info("쿠키가 있니?");
             for(int i=0;i<cookies.length;i++){
                 if(key.equals(cookies[i].getName())){
                     value = java.net.URLDecoder.decode(cookies[i].getValue(), "UTF-8");
@@ -137,7 +138,7 @@ public class JwtTokenProvider {
         return value;
     }
     // 쿠키 삭제하기
-    public static void delCookie(HttpServletResponse response, String key) throws Exception {
+    public void delCookie(HttpServletResponse response, String key) throws Exception {
 //		Cookie cookie = new Cookie("cookie"+key, java.net.URLEncoder.encode(value.toString(), "UTF-8"));
 
         Cookie cookie = new Cookie(key, "0");
