@@ -73,13 +73,13 @@ public class MemberController {
                 status = HttpStatus.ACCEPTED;
 
 
-                ResponseCookie responseCookieookie = ResponseCookie.from("sameSiteCookie", "sameSiteCookieValue")
-                        .domain("ifuwanna.tistory.com")
-                        .sameSite("None")
-                        .secure(true)
-                        .path("/")
-                        .build();
-                response.addHeader("Set-Cookie", responseCookieookie.toString());
+//                ResponseCookie responseCookieookie = ResponseCookie.from("sameSiteCookie", "sameSiteCookieValue")
+//                        .domain("ifuwanna.tistory.com")
+//                        .sameSite("None")
+//                        .secure(true)
+//                        .path("/")
+//                        .build();
+//                response.addHeader("Set-Cookie", responseCookieookie.toString());
 
 
                 // 리프레시 토큰 쿠키에 저장하기
