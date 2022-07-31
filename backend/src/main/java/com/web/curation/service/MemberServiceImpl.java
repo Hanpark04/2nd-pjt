@@ -93,11 +93,6 @@ public class MemberServiceImpl implements MemberService {
         userDto.setAccessToken(access);
         userDto.setRefreshToken(refresh);
 
-        // 리프레시 토큰 저장
-        RefreshToken refreshToken = RefreshToken.createToken(user.getEmail(), refresh);
-
-        refreshTokenRepository.save(refreshToken);
-
         return userDto;
     }
 

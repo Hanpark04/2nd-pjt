@@ -35,7 +35,7 @@ public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String secretKey = "secretKey";
-    private final long accessTokenValidMillisecond = 1000L * 60 * 3; // 1시간 유효 토큰
+    private final long accessTokenValidMillisecond = 1000L * 60 * 2; // 1시간 유효 토큰
     private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 14; // 2주 유효 토큰
 
     // JwtTokenProvider 시작될 때 초기화
@@ -66,7 +66,9 @@ public class JwtTokenProvider {
     }
 
     //JWT refresh-token 생성
+    @Transactional
     public String createRefreshToken(String email){
+
         LOGGER.info("[createRefreshToken] 토큰 생성 시작");
         Claims claims = Jwts.claims().setSubject(email);
 
@@ -79,6 +81,12 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(now.getTime() + refreshTokenValidMillisecond))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+
+        RefreshToken findRefreshToken = refreshTokenRepository.findByUserId(email)
+                .orElse(RefreshToken.createToken(email, token));
+
+        findRefreshToken.changeToken(token);
+        refreshTokenRepository.save(findRefreshToken);
 
         LOGGER.info("[createRefreshToken] 토큰 생성 완료");
         return token;

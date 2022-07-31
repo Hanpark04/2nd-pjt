@@ -87,7 +87,7 @@ public class MemberController {
                 Cookie cookie = new Cookie("refreshToken", loginUser.getRefreshToken());
                 cookie.setMaxAge(7 * 24 * 60 * 60);
 //                cookie.setSecure(true);
-//                cookie.setHttpOnly(true);
+                cookie.setHttpOnly(true);
                 cookie.setPath("/");
 
                 response.addCookie(cookie);
@@ -135,7 +135,7 @@ public class MemberController {
 //    }
 
     // 회원정보 가져오기
-    @GetMapping("/{email}")
+    @GetMapping("/info/{email}")
     public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("email") String email, HttpServletRequest request) {
 
 		LOGGER.debug("email : {} ", email);
@@ -158,7 +158,7 @@ public class MemberController {
         return new ResponseEntity<>(resultMap, status);
     }
     // 회원 탈퇴
-    @DeleteMapping("{email}")
+    @DeleteMapping("/info/{email}")
     public ResponseEntity<String> deleteMember(@PathVariable("email") String email) {
         LOGGER.debug("deleteUser - 호출");
 
@@ -219,7 +219,7 @@ public class MemberController {
 
     // 비밀번호 변경
     // 비밀번호가 포함되어 있어서 body로 받을 것임
-    @PutMapping({"/pw"})
+    @PutMapping({"/info/pw"})
     public ResponseEntity<String> updatePassword(@RequestBody UserDto userDto) {
         LOGGER.info("updatePassword 호출");
 
@@ -230,7 +230,7 @@ public class MemberController {
     }
 
     // 비밀번호 확인
-    @GetMapping("/check")
+    @GetMapping("info/check")
     public ResponseEntity<String> checkPassword(@RequestBody UserDto userDto){
         LOGGER.info("checkPassword 호출");
 
