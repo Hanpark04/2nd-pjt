@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./CampingCard.scss";
-// import coverImg from "@images/temp_1.jpeg"; // url string으로 가져오기
+import coverImg from "@images/temp_1.jpeg"; // url string으로 가져오기
 import placeIcon from "@images/icon/place_black_24dp.svg";
 
 function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
@@ -10,15 +10,25 @@ function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
   };
 
   const detailUrl = `/camping/detail/${campId}`;
+  // console.log(firstImageUrl);
 
   return (
     <div className="camping_card flex column">
       <Link to={detailUrl} className="camping_card_img">
-        <img
-          className="camping_card_img_cover"
-          src={firstImageUrl}
-          alt="coverImg"
-        />
+        {firstImageUrl === "\\N" && (
+          <img
+            className="camping_card_img_cover"
+            src={coverImg}
+            alt="coverImg"
+          />
+        )}
+        {firstImageUrl !== "\\N" && (
+          <img
+            className="camping_card_img_cover"
+            src={firstImageUrl}
+            alt="coverImg"
+          />
+        )}
       </Link>
 
       <div className="camping_card_info flex align-center">
