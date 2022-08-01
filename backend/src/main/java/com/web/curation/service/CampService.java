@@ -9,9 +9,12 @@ import com.web.curation.data.repository.CampRepository;
 import com.web.curation.data.repository.LikedCampRepository;
 import com.web.curation.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +30,18 @@ public class CampService{
         this.likedCampRepository = likedCampRepository;
         this.userRepository = userRepository;
     }
+
     /* campList READ */
     @Transactional(readOnly = true)
-    public List<TotalCampList> getAllCamps() {
-        return campRepository.findAll();
+    public List<CampDto.CampList> getAllCamps(int page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<TotalCampList> totalCampList = campRepository.findAll(pageRequest);
+        List<CampDto.CampList> rttotalCampList = new ArrayList<>();
+        for(TotalCampList tcl : totalCampList){
+            CampDto.CampList cl = new CampDto.CampList(tcl);
+            rttotalCampList.add(cl);
+        }
+        return rttotalCampList;
     }
 
     /* campDetail READ */
@@ -42,8 +53,18 @@ public class CampService{
         return new CampDto.CampDetail(totalCampList);
     }
 
-    public Optional<TotalCampList> findById(int camp_id){
-        return campRepository.findById(camp_id);
+    /* camp 키워드 검색 결과 리스트 READ */
+    @Transactional(readOnly = true)
+    public List<CampDto.CampList> keywordSearchCampList(String keyword){
+        List<CampDto.CampList> kwSearchCampList = campRepository.findByFacltNmContains(keyword);
+        return kwSearchCampList;
+    }
+
+    /* camp 지역 검색 결과 리스트 READ */
+    @Transactional(readOnly = true)
+    public List<CampDto.CampList> regionSearchCampList(String doname, String sigungu){
+        List<CampDto.CampList> regionSearchCampList = campRepository.findByDoNmAndSigunguNm(doname,sigungu);
+        return regionSearchCampList;
     }
 
 

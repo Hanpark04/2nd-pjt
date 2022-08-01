@@ -16,7 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -46,22 +48,35 @@ public class PhotoController {
         return new ResponseEntity<List<PhotoDto>>(photoService.bestPhoto(), HttpStatus.OK);
     }
 
+    // 포토 상세
+    @GetMapping("/detail/{boardId}")
+    public ResponseEntity<PhotoDto> detailPhoto(@PathVariable String boardId) {
+        LOGGER.info("detailPhoto 호출");
+        return new ResponseEntity<>(photoService.detailPhoto(Integer.parseInt(boardId)), HttpStatus.OK);
+    }
+
     @GetMapping("{email}")
-    public ResponseEntity<List<PhotoDto>> bestPhoto(@PathVariable String email) {
-        LOGGER.info("bestPhoto - 호출");
+    public ResponseEntity<List<PhotoDto>> userPhoto(@PathVariable String email) {
+        LOGGER.info("userPhoto - 호출");
         return new ResponseEntity<List<PhotoDto>>(photoService.userPhoto(email), HttpStatus.OK);
     }
 
     private String uploadPath = "/home/ubuntu/app/photo/";
 
     @PostMapping
-    public ResponseEntity<String> writePhoto(@RequestPart("data") PhotoDto photoDto, @RequestPart MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> writePhoto(PhotoDto photoDto, MultipartFile file) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+
         LOGGER.info("writePhoto - 호출");
 
         // 이미지 파일이 아닐 때
         if(file.getContentType().startsWith("image") == false){
             LOGGER.warn("this file is not image type");
-            return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.BAD_REQUEST;
+
+            return new ResponseEntity<>(resultMap, status);
         }
 
         //브라우저에 따라 업로드하는 파일의 이름은 전체경로일 수도 있고(Internet Explorer),
@@ -89,10 +104,19 @@ public class PhotoController {
         }
 
         photoDto.setFilePath(savePath.toString());
-        if (photoService.writePhoto(photoDto)) {
-            return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+
+        int result = photoService.writePhoto(photoDto);
+        if (result != 0) {
+            resultMap.put("message", SUCCESS);
+            resultMap.put("boardId", result);
+
+            return new ResponseEntity<>(resultMap, status);
         }
-        return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+
+        resultMap.put("message", FAIL);
+        status = HttpStatus.BAD_REQUEST;
+
+        return new ResponseEntity<>(resultMap, status);
     }
 
 
@@ -118,21 +142,38 @@ public class PhotoController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<String> pushLike(@RequestParam int boardId, @RequestParam String email) {
+    public ResponseEntity<Map<String,Object>> pushLike(@RequestParam int boardId, @RequestParam String email) {
+        Map<String, Object> resultMap = new HashMap<>();
         LOGGER.info("pushLike - 호출");
 //        int intOfBoardId = Integer.parseInt(boardId);
-        if (photoService.pushLike(boardId, email)) {
-            return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        int likeCount = photoService.pushLike(boardId, email);
+
+        if (likeCount != -1) {
+
+            resultMap.put("like", likeCount);
+            resultMap.put("message", SUCCESS);
+
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
         }
-        return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+
+        resultMap.put("message", FAIL);
+        return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/like")
-    public ResponseEntity<String> cancelLike(@RequestParam int boardId, @RequestParam String email) {
+    public ResponseEntity<Map<String,Object>> cancelLike(@RequestParam int boardId, @RequestParam String email) {
+        Map<String, Object> resultMap = new HashMap<>();
         LOGGER.info("cancelLike - 호출");
-        if (photoService.cancelLike(boardId, email)) {
-            return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+
+        int likeCount = photoService.cancelLike(boardId, email);
+        if (likeCount != -1) {
+
+            resultMap.put("like", likeCount);
+            resultMap.put("message", SUCCESS);
+
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
         }
-        return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+        resultMap.put("message", FAIL);
+        return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
     }
 }

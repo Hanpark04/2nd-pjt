@@ -11,7 +11,9 @@ import com.web.curation.service.CampService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +37,19 @@ public class CampController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+//    /* campList READ */
+//    @GetMapping()
+//    public List<CampDto.CampList> getAllCamps(){
+//        return campService.getAllCamps();
+//    }
     /* campList READ */
     @GetMapping()
-    public List<TotalCampList> getAllCamps(){
-        return campService.getAllCamps();
+    public List<CampDto.CampList> getAllCamps(@RequestParam int page){
+        System.out.println(page);
+        return campService.getAllCamps(page);
     }
+
+
 
     /* campDetail READ */
     @GetMapping("/{campId}")
@@ -48,6 +58,27 @@ public class CampController {
         return new ResponseEntity<CampDto.CampDetail>(campService.campDetailRead(campId),HttpStatus.OK);
 
     }
+
+    /* camp 키워드 검색 결과 리스트 READ */
+    @GetMapping("/search/{keyword}")
+    public List<CampDto.CampList> keywordSearchCampList(@PathVariable("keyword") String keyword){
+        System.out.println(keyword);
+        return campService.keywordSearchCampList(keyword);
+    }
+
+    /* camp 지역 검색 결과 리스트 READ */
+    @GetMapping("/search/{doname}/{sigungu}")
+    public List<CampDto.CampList> regionSearchCampList(@PathVariable("doname") String doname, @PathVariable("sigungu") String sigungu){
+        return campService.regionSearchCampList(doname, sigungu);
+    }
+
+    /* camp tag 검색 결과 리스트 READ */
+//    @GetMapping("/search/{keyword}")
+//    public List<CampDto.CampList> keywordSearchCampList(@PathVariable("keyword") String keyword){
+//        System.out.println(keyword);
+//        return campService.keywordSearchCampList(keyword);
+//    }
+
     /*
     likedCampList(schedule) CREATE
     로그인한 user id 필요함.
