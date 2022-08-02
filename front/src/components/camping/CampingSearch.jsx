@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./CampingSearch.scss";
 import { v4 } from "uuid";
 
@@ -19,7 +19,7 @@ export function CampingSearchLoca() {
 }
 
 export function CampingSearchTag() {
-  const tags = [
+  const tagsData = [
     "가을",
     "가을단풍명소",
     "강",
@@ -64,11 +64,41 @@ export function CampingSearchTag() {
     "호수",
     "장비대여"
   ];
-  const tagList = tags.map(tag => (
-    <button type="button" className="fs-18 notoMid" key={v4()}>
+
+  const [selectTags, setSelectTags] = useState([]); // 선택된 태그들 보내기
+
+  const tagSelects = value => {
+    const index = selectTags.indexOf(value);
+    // 선택되지 않았다면
+    if (index === -1) {
+      setSelectTags([...selectTags, value]);
+    } else {
+      setSelectTags(selectTags.filter(tag => tag !== value));
+    }
+    console.log(selectTags);
+  };
+
+  // tag class 이름
+  const selectTagClass = value => {
+    const prefix = "fs-18 notoMid";
+    if (selectTags.indexOf(value) === -1) {
+      return prefix;
+    }
+    return `${prefix} selected`;
+  };
+
+  // 태그 리스트 컴포넌트
+  const tagList = tagsData.map(tag => (
+    <button
+      type="button"
+      className={selectTagClass(tag)}
+      key={v4()}
+      onClick={() => tagSelects(tag)}
+    >
       {tag}
     </button>
   ));
+
   return (
     <div className="search_tag flex">
       <div className="search_tag_list">{tagList}</div>
