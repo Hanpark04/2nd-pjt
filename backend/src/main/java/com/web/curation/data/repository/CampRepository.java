@@ -15,5 +15,4 @@ public interface CampRepository extends JpaRepository<TotalCampList, Integer> {
     List<CampDto.CampList> findByDoNmAndSigunguNm(String doNm, String sigunguNm);
 
 
-
 }

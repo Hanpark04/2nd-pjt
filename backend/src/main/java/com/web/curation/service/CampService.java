@@ -2,11 +2,13 @@ package com.web.curation.service;
 
 import com.web.curation.data.dto.CampDto;
 import com.web.curation.data.dto.ScheduleDto;
+import com.web.curation.data.dto.TagDto;
 import com.web.curation.data.entity.LikedCampList;
 import com.web.curation.data.entity.TotalCampList;
 import com.web.curation.data.entity.User;
 import com.web.curation.data.repository.CampRepository;
 import com.web.curation.data.repository.LikedCampRepository;
+import com.web.curation.data.repository.TagRepository;
 import com.web.curation.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,12 +25,14 @@ public class CampService{
     private final CampRepository campRepository;
     private final LikedCampRepository likedCampRepository;
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
     @Autowired
-    public CampService(CampRepository campRepository, LikedCampRepository likedCampRepository, UserRepository userRepository) {
+    public CampService(CampRepository campRepository, LikedCampRepository likedCampRepository, UserRepository userRepository, TagRepository tagRepository) {
         this.campRepository = campRepository;
         this.likedCampRepository = likedCampRepository;
         this.userRepository = userRepository;
+        this.tagRepository = tagRepository;
     }
 
     /* campList READ */
@@ -67,24 +71,39 @@ public class CampService{
         return regionSearchCampList;
     }
 
-    /* camp 지역 검색 결과 리스트 READ */
-    @Transactional(readOnly = true)
-    public List<CampDto.CampList> tagSearchCampList(List<String> taglist){
-
-
-
-
-
-
-//        List<CampDto.CampList> tagSearchCampList = new ArrayList<>();
+//    /* camp 지역 검색 결과 리스트 READ */
+//    @Transactional(readOnly = true)
+//    public List<CampDto.CampList> tagSearchCampList(List<String> taglist){
 //
+//        List<TagDto.SearchedTag>[] searchedTags = new ArrayList[8];
 //        for (String tag : taglist){
-//
+//            List<TagDto.SearchedTag> tagsearched = tagRepository.findByHashtag(tag);
+//            for (TagDto.SearchedTag serched : tagsearched){
+//                int idx = serched.getTagGroup();
+//                searchedTags[idx].add(serched);
+//            }
 //        }
-
-
-        return regionSearchCampList;
-    }
+//
+//        List<CampDto.CampList> tagSearchCampList = new ArrayList<>();
+//        for(int i = 1; i < 8; i++){
+//            searchedTags[i]
+//        }
+//
+//
+//
+//
+//
+//
+//
+////        List<CampDto.CampList> tagSearchCampList = new ArrayList<>();
+////
+////        for (String tag : taglist){
+////
+////        }
+//
+//
+//        return regionSearchCampList;
+//    }
 
 
 

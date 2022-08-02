@@ -75,8 +75,8 @@ public class CampController {
 //    /* camp tag 검색 결과 리스트 READ */
 //    @GetMapping("/search/tagsearch")
 //    public List<CampDto.CampList> tagSearchCampList(@RequestParam List<String> taglist){
-////        System.out.println(keyword);
-////        return campService.keywordSearchCampList(keyword);
+//        System.out.println(taglist);
+//        return campService.tagSearchCampList(taglist);
 //    }
 
     /*
