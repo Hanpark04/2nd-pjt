@@ -11,7 +11,6 @@ import JoinFinish from "@screens/user/JoinFinish";
 import FindId from "@screens/user/FindId";
 import FindIdFinish from "@screens/user/FindIdFinish";
 import FindPw from "@screens/user/FindPw";
-import FindPwAuth from "@screens/user/FindPwAuth";
 import FindPwCh from "@screens/user/FindPwCh";
 import FindPwFinish from "@screens/user/FindPwFinish";
 // mypage
@@ -63,8 +62,7 @@ function Router() {
         </Route>
         <Route path="/findpw/*">
           <Route index element={<FindPw />} />
-          <Route path="auth" element={<FindPwAuth />} />
-          <Route path="ch" element={<FindPwCh />} />
+          <Route path="change" element={<FindPwCh />} />
           <Route path="finish" element={<FindPwFinish />} />
         </Route>
 
@@ -76,10 +74,10 @@ function Router() {
         </Route>
 
         {/* Drop */}
-        <Route path="/drop/*">
+        {/* <Route path="/drop/*">
           <Route index element={<Drop />} />
           <Route path="finish" element={<DropFinish />} />
-        </Route>
+        </Route> */}
 
         {/* community */}
         <Route path="/board/*">
@@ -94,7 +92,7 @@ function Router() {
 
         <Route path="/camping/*">
           <Route index element={<CampingMain />} />
-          <Route path="detail/:id" element={<CampingDetail />} />
+          <Route path="detail" element={<CampingDetail />} />
         </Route>
 
         <Route path="/plan/*">
@@ -105,6 +103,11 @@ function Router() {
         {/* mypage */}
         <Route path="/mypage/*">
           <Route path="myfeed" element={<MyFeed />} />
+          <Route path="drop" element={<Drop />} />
+          <Route path="drop/finish" element={<DropFinish />} />
+          <Route path="pwch" element={<PwCh />} />
+          <Route path="pwch/edit" element={<PwEdit />} />
+          <Route path="info/edit" element={<InfoEdit />} />
         </Route>
       </Routes>
     </>
