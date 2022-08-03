@@ -1,7 +1,8 @@
 import API from "./index";
 
+// 캠핑장 전체 리스트 불러오기
 export const getCamplist = async page => {
-  console.log(page);
+  // console.log(page);
   const res = await API.get("/camp", {
     params: {
       page
@@ -10,9 +11,16 @@ export const getCamplist = async page => {
   return res.data;
 };
 
+// 캠핑장 상세페이지 불러오기
 export const campDetailInfo = async campId => {
   const res = await API.get(`/camp/${campId}`);
-  // console.log(res.data);
+  console.log(res.data);
   return res.data;
 };
+
+// export const getLocation = async () => {
+//   const res = await API.get(`/camp/`);
+//   return res.data;
+// }
+
 export const ex = () => {};

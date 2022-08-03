@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./CampingSearch.scss";
 import { v4 } from "uuid";
 
+// ==================================
+// 지역별 검색 컴포넌트
 export function CampingSearchLoca() {
   return (
     <div className="search_loca">
@@ -17,7 +19,8 @@ export function CampingSearchLoca() {
     </div>
   );
 }
-
+// ==================================
+// 태그별 검색 컴포넌트
 export function CampingSearchTag() {
   const tagsData = [
     "가을",
