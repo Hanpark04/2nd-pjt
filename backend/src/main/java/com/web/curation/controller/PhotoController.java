@@ -10,10 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -64,11 +67,37 @@ public class PhotoController {
     private String uploadPath = "/home/ubuntu/app/photo/";
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> writePhoto(PhotoDto photoDto) {
+    public ResponseEntity<Map<String, Object>> writePhoto(PhotoDto photoDto, MultipartFile file) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
         LOGGER.info("writePhoto - 호출");
+
+        Map<String, Object> param = new HashMap<String,Object>();
+        String fileName = file.getOriginalFilename();
+
+        byte[] bytes;
+
+        try{
+            bytes = file.getBytes();
+            try{
+                Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+                LOGGER.info("length: {} ", blob.length());
+                photoDto.setFileName(fileName);
+                photoDto.setFilePath(blob);
+
+                param.put("file",blob);
+                param.put("file_name", fileName);
+                param.put("file_size", blob.length());
+            } catch(SerialException e1){
+                e1.printStackTrace();
+            } catch (SQLException e1){
+                e1.printStackTrace();
+            }
+        }  catch (IOException e2){
+            e2.printStackTrace();
+        }
+
 
         // 이미지 파일이 아닐 때
 //        if(file.getContentType().startsWith("image") == false){
