@@ -1,9 +1,8 @@
 package com.web.curation.controller;
 
-import com.web.curation.data.dto.PhotoDto;
 import com.web.curation.data.dto.TalkDto;
-import com.web.curation.service.PhotoService;
 import com.web.curation.service.TalkService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import java.util.UUID;
 @RestController
 //@CrossOrigin("*")
 @RequestMapping("/talk")
+
 public class TalkController {
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
     private static final String SUCCESS = "success";
@@ -32,9 +32,10 @@ public class TalkController {
     private final TalkService talkService;
 
     @Autowired
-    public TalkController(TalkService talkService) {
+    private TalkController(TalkService talkService){
         this.talkService = talkService;
     }
+
 
     @GetMapping
     public ResponseEntity<List<TalkDto>> listTalk() {
@@ -54,9 +55,9 @@ public class TalkController {
         return new ResponseEntity<List<TalkDto>>(talkService.userTalk(email), HttpStatus.OK);
     }
 
-    @GetMapping("/{talkId}")
+    @GetMapping("/detail/{talkId}")
     public ResponseEntity<TalkDto> detailTalk(@PathVariable int talkId) {
-        LOGGER.info("detailPhoto 호출");
+        LOGGER.info("detailPhoto 호출 {}", talkId);
         return new ResponseEntity<>(talkService.detailTalk(talkId), HttpStatus.OK);
     }
 

@@ -4,6 +4,7 @@ import com.web.curation.data.dto.PhotoDto;
 import com.web.curation.data.dto.TalkDto;
 import com.web.curation.data.entity.*;
 import com.web.curation.data.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TalkService {
     private final Logger LOGGER = LoggerFactory.getLogger(TalkService.class);
     private final TalkRepository talkRepository;
@@ -138,6 +140,7 @@ public class TalkService {
         LOGGER.info("talkDto FIleName() : ", talkDto.getFileName());
 
         thumbnailFile.setName(talkDto.getFileName());
+        thumbnailFile.setTalk(talk);
 
         thumbnailFileRepository.save(thumbnailFile);
         LOGGER.info("[getSignUpResult] userEntity 값이 들어왔는지 확인 후 결과값 주입");
@@ -174,6 +177,7 @@ public class TalkService {
             return true;
         }
         return false;
+//        return true;
     }
 
     public boolean deleteTalk(int talkId) {
