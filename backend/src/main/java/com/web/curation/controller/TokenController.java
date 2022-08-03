@@ -57,6 +57,7 @@ public class TokenController {
 
         // 리프레시 토큰이 유효하면
         if(jwtTokenProvider.validateToken(sliceRefresh).equals("ACCESS")){
+            LOGGER.info("refreshToken 유효하니");
             // 새로운 refreshToken과 accessToken을 리턴한다.
             String newRefresh = jwtTokenProvider.reissueRefreshToken(sliceRefresh);
             LOGGER.info("refreshToken {}", newRefresh);
