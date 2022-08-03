@@ -41,12 +41,12 @@ public class TokenController {
         LOGGER.info("[silentRefresh] 실행");
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        String refresh = refreshToken.get("refreshtoken");
+        String refresh = refreshToken.get("refreshToken");
         LOGGER.info("refreshtoken 맞아? {}", refresh);
 
 //        String refreshToken = jwtTokenProvider.resolveToken(request, "refreshToken");
         String sliceRefresh = null;
-        if (refreshToken != null && refresh.startsWith("Bearer-")) {
+        if (refresh != null && refresh.startsWith("Bearer-")) {
             sliceRefresh = refresh.substring(7);
 
         } else {
