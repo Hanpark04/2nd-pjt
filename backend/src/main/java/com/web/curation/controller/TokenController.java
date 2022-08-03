@@ -59,17 +59,18 @@ public class TokenController {
         if(jwtTokenProvider.validateToken(sliceRefresh).equals("ACCESS")){
             // 새로운 refreshToken과 accessToken을 리턴한다.
             String newRefresh = jwtTokenProvider.reissueRefreshToken(sliceRefresh);
+            LOGGER.info("refreshToken {}", newRefresh);
 
             String email = jwtTokenProvider.getUsername(newRefresh);
             User user = userRepository.getByEmail(email);
             String newAccess = jwtTokenProvider.createAccessToken(email, user.getRoleType());
+            LOGGER.info("new access & refresh 재발급 완료");
 
             Authentication authentication = jwtTokenProvider.getAuthentication(newAccess);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            LOGGER.info("new access & refresh 재발급 완료");
             LOGGER.info("accessToken {}", newAccess);
-            LOGGER.info("refreshToken {}", newRefresh);
+
             resultMap.put("accessToken", newAccess);
             resultMap.put("refreshToken", newRefresh);
             resultMap.put("message", SUCCESS);
