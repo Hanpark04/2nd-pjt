@@ -73,27 +73,15 @@ public class PhotoController {
 
         LOGGER.info("writePhoto - 호출");
 
-        Map<String, Object> param = new HashMap<String,Object>();
         String fileName = file.getOriginalFilename();
+        photoDto.setFileName(fileName);
 
         byte[] bytes;
 
         try{
             bytes = file.getBytes();
-            try{
-                Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-                LOGGER.info("length: {} ", blob.length());
-                photoDto.setFileName(fileName);
-                photoDto.setFilePath(blob);
-
-                param.put("file",blob);
-                param.put("file_name", fileName);
-                param.put("file_size", blob.length());
-            } catch(SerialException e1){
-                e1.printStackTrace();
-            } catch (SQLException e1){
-                e1.printStackTrace();
-            }
+            photoDto.setFile(bytes);
+            LOGGER.info("bytes 파일 {}", bytes.toString());
         }  catch (IOException e2){
             e2.printStackTrace();
         }
@@ -150,7 +138,7 @@ public class PhotoController {
 
 
     @PutMapping
-    public ResponseEntity<String> updatePhoto(PhotoDto photoDto) {
+    public ResponseEntity<String> updatePhoto(PhotoDto photoDto, MultipartFile file) {
         LOGGER.info("updatePhoto - 호출");
 //        LOGGER.info(photoDto.getTitle());
 
@@ -177,6 +165,18 @@ public class PhotoController {
 //        }
 //
 //        photoDto.setFilePath(savePath.toString());
+
+        String fileName = file.getOriginalFilename();
+        photoDto.setFileName(fileName);
+        byte[] bytes;
+
+        try{
+            bytes = file.getBytes();
+            photoDto.setFile(bytes);
+            LOGGER.info("bytes 파일 {}", bytes.toString());
+        }  catch (IOException e2){
+            e2.printStackTrace();
+        }
 
         if (photoService.updatePhoto(photoDto)) {
             return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);

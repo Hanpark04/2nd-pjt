@@ -26,6 +26,7 @@ public class PhotoDto {
 //    private int dType;
 
     private String fileName;
-    private Blob file;
+    private byte[] file;
+    private String blobFile;
 
 }
