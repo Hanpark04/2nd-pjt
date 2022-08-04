@@ -10,6 +10,16 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TagRepository  extends JpaRepository<CampTag, Integer> {
-    List<TagDto.SearchedTag> findByHashtag(String hashtag);
+    @Query("select distinct t " +
+            "from CampTag t " +
+            "where (t.hashtag in (:taglist))" //+
+//            "or (t.tagGroup = 2 and t.hashtag in :taglist)" +
+//            "or (t.tagGroup = 3 and t.hashtag in :taglist)" +
+//            "or (t.tagGroup = 4 and t.hashtag in :taglist)" +
+//            "or (t.tagGroup = 5 and t.hashtag in :taglist)" +
+//            "or (t.tagGroup = 6 and t.hashtag in :taglist)" +
+//            "or (t.tagGroup = 7 and t.hashtag in :taglist)"
+            )
+    List<TagDto.SearchedTag> findByHashtag(List<String> taglist);
 
 }

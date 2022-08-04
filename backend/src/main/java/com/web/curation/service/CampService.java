@@ -71,39 +71,23 @@ public class CampService{
         return regionSearchCampList;
     }
 
-//    /* camp 지역 검색 결과 리스트 READ */
-//    @Transactional(readOnly = true)
-//    public List<CampDto.CampList> tagSearchCampList(List<String> taglist){
-//
-//        List<TagDto.SearchedTag>[] searchedTags = new ArrayList[8];
-//        for (String tag : taglist){
-//            List<TagDto.SearchedTag> tagsearched = tagRepository.findByHashtag(tag);
-//            for (TagDto.SearchedTag serched : tagsearched){
-//                int idx = serched.getTagGroup();
-//                searchedTags[idx].add(serched);
-//            }
-//        }
-//
-//        List<CampDto.CampList> tagSearchCampList = new ArrayList<>();
-//        for(int i = 1; i < 8; i++){
-//            searchedTags[i]
-//        }
-//
-//
-//
-//
-//
-//
-//
-////        List<CampDto.CampList> tagSearchCampList = new ArrayList<>();
-////
-////        for (String tag : taglist){
-////
-////        }
-//
-//
-//        return regionSearchCampList;
-//    }
+    /* camp 태그 검색 결과 리스트 READ */
+    @Transactional(readOnly = true)
+    public List<CampDto.CampList> tagSearchCampList(List<String> taglist){
+        List<TagDto.SearchedTag> selecteds = tagRepository.findByHashtag(taglist);
+        System.out.println("넘어옴???");
+        System.out.println(taglist);
+        System.out.println(selecteds.size());
+        List<CampDto.CampList> tagSearchCampList = null;
+        for (TagDto.SearchedTag s : selecteds){
+            System.out.println("들어감?");
+            System.out.println(s.getCampId());
+            System.out.println(campRepository.findByCampId(s.getCampId()));
+            tagSearchCampList.add(campRepository.findByCampId(s.getCampId()));
+        }
+
+        return tagSearchCampList;
+    }
 
 
 
