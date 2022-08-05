@@ -5,9 +5,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 // import { ko } from "date-fns/esm/locale";
 import "./AddPlanModal.scss";
+import { addPlan } from "../../apis/plan";
 import useOutSideClick from "../../utils/useOutSideClick";
 
-function Modal({ onClose }) {
+function Modal({ onClose, campId, facltNm }) {
   const navigate = useNavigate();
   const handleClose = () => {
     onClose?.();
@@ -22,16 +23,26 @@ function Modal({ onClose }) {
 
   const modalRef = useRef(null);
   const tripRef = useRef(""); // 여행 제목 입력 값
+  // const email = sessionStorage.getItem("email");
+  const email = "jmlee9707@naver.com";
 
   useOutSideClick(modalRef, handleClose); // ref 밖의 요소 선택하면 함수 실행
-
-  const addPlan = () => {
-    navigate("/plan/detail");
-  };
 
   // 현재 날짜값으로 초기화
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  const movePlan = async () => {
+    const savedTitle = tripRef.current.value;
+    const saveId = await addPlan(campId, email, startDate, endDate, savedTitle);
+
+    if (saveId !== null || saveId === "\\N") {
+      navigate(`/plan/detail/${saveId}`);
+    } else {
+      alert("fail");
+    }
+    // console.log(campId);
+  };
 
   return (
     <div className="overlay">
@@ -41,9 +52,7 @@ function Modal({ onClose }) {
       >
         <div className="modal_body flex column align-center justify-center">
           <div className="modal_body_txt flex column align-center">
-            <div className="modal_body_txt_title notoBold fs-32">
-              수완동 캠핑장
-            </div>
+            <div className="modal_body_txt_title notoBold fs-32">{facltNm}</div>
             <div className="modal_body_txt_days flex align-center notoMid fs-24">
               날짜 :
               <div className="flex modal_body_txt_days_select flex ">
@@ -84,7 +93,7 @@ function Modal({ onClose }) {
             <button
               type="button"
               className="modal_body_btn_add notoBold fs-18 flex align-center justify-center"
-              onClick={addPlan}
+              onClick={movePlan}
             >
               일정 추가
             </button>

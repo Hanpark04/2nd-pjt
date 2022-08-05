@@ -97,7 +97,7 @@ function Router() {
 
         <Route path="/plan/*">
           <Route index element={<PlanMain />} />
-          <Route path="detail" element={<PlanDetail />} />
+          <Route path="detail/:id" element={<PlanDetail />} />
         </Route>
 
         {/* mypage */}

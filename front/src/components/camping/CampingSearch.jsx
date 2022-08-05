@@ -1,10 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./CampingSearch.scss";
+import search from "@images/icon/search_black_24dp.svg";
 import { v4 } from "uuid";
+import { searchAll } from "../../apis/camp";
+
+export function CampingSearchAll() {
+  const keywordRef = useRef();
+  const searchKeyword = async () => {
+    const keyword = keywordRef.current.value;
+    // async function searchCampWord() {
+    const res = await searchAll(`${encodeURIComponent(keyword)}`);
+    console.log(res);
+    // }
+  };
+  const tops = ["싸피 캠핑장", "연관검색어2", "연관검색어3", "연관검색어4"];
+  const topList = tops.map(top => (
+    <div
+      className="main_title_left_word_detail flex align-center justify-center"
+      key={v4()}
+    >
+      {top}
+    </div>
+  ));
+  return (
+    <>
+      <div className="main_title_left_txt">캠핑장 찾고 계신가요?</div>
+      <div className="main_title_left_search flex">
+        <input
+          ref={keywordRef}
+          type="text"
+          className="main_title_left_search_input notoMid fs-16"
+          placeholder="캠핑장을 검색해주세요"
+        />
+        <button
+          onClick={searchKeyword}
+          type="button"
+          className="main_title_left_search_btn flex align-center justify-center"
+        >
+          <img src={search} alt="button" />
+        </button>
+      </div>
+      <div className="main_title_left_word flex fs-14 notoMid">{topList}</div>
+    </>
+  );
+}
 
 // ==================================
 // 지역별 검색 컴포넌트
 export function CampingSearchLoca() {
+  // const [doCode, setDoCode] = useState([]);
+  // const sidoChange = () => {
+
+  //   console.log("aaa");
+  // };
+
   return (
     <div className="search_loca">
       <select type="text" className="fs-16 notoMid">

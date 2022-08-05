@@ -32,7 +32,7 @@ function CampingDetail() {
   };
 
   useEffect(() => {
-    console.log(campId);
+    // console.log(campId);
     getCampDetailInfo(); // 초기에 정보 받아오기
   }, [campId]);
 
@@ -101,6 +101,8 @@ function CampingDetail() {
                 onClose={() => {
                   setModalVisible(false);
                 }}
+                campId={campId}
+                facltNm={campInfo.facltNm}
               />
             )}
             <div className="detail_camp_text">

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./CampingCard.scss";
+import AddPlanModal from "@components/camping/AddPlanModal";
 import coverImg from "@images/temp_1.jpeg"; // url string으로 가져오기
 import placeIcon from "@images/icon/place_black_24dp.svg";
 
@@ -11,6 +12,11 @@ function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
 
   const detailUrl = `/camping/detail/${campId}`;
   // console.log(firstImageUrl);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const openModal = () => {
+    setModalVisible(true);
+  };
 
   return (
     <div className="camping_card flex column">
@@ -51,21 +57,35 @@ function CampingCard({ campId, facltNm, addr1, homepage, firstImageUrl }) {
 
         <div className="camping_card_info_btn">
           <button
+            onClick={openModal}
             type="button"
             className="camping_card_info_btn_plan notoBold fs-20"
           >
             일정에 추가하기
           </button>
-          <button
-            type="button"
-            className="camping_card_info_btn_move notoBold fs-20"
-            onClick={moveSite}
-          >
-            사이트 바로가기
-          </button>
+          {homepage !== null && homepage !== "\\N" && (
+            <button
+              type="button"
+              className="camping_card_info_btn_move notoBold fs-20"
+              onClick={moveSite}
+            >
+              사이트 바로가기
+            </button>
+          )}
         </div>
       </div>
       <div className="divide" />
+      {/* 모달창 띄우기 */}
+      {modalVisible && (
+        <AddPlanModal
+          visible={modalVisible}
+          onClose={() => {
+            setModalVisible(false);
+          }}
+          campId={campId}
+          facltNm={facltNm}
+        />
+      )}
     </div>
     // <>dd</>
   );

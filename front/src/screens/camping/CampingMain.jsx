@@ -2,26 +2,17 @@ import React, { useState } from "react";
 import CampingList from "@components/camping/CampingList";
 import "./CampingMain.scss";
 import banner from "@images/temp_1.jpeg"; // banner 이미지
-import search from "@images/icon/search_black_24dp.svg";
-import { v4 } from "uuid";
+
 import {
   CampingSearchLoca,
-  CampingSearchTag
+  CampingSearchTag,
+  CampingSearchAll
 } from "@components/camping/CampingSearch";
 
 function CampingMain() {
   // const top = "싸피 캠핑장";
   const [visibleTag, setVisibleTag] = useState(true);
   const [visibleLoca, setVisibleLoca] = useState(false);
-  const tops = ["싸피 캠핑장", "연관검색어2", "연관검색어3", "연관검색어4"];
-  const topList = tops.map(top => (
-    <div
-      className="main_title_left_word_detail flex align-center justify-center"
-      key={v4()}
-    >
-      {top}
-    </div>
-  ));
 
   // camplist props
   // campInfos  = [];
@@ -31,23 +22,7 @@ function CampingMain() {
       <div className="main">
         <div className="main_title flex notoBold fs-32">
           <div className="main_title_left">
-            <div className="main_title_left_txt">캠핑장 찾고 계신가요?</div>
-            <div className="main_title_left_search flex">
-              <input
-                type="text"
-                className="main_title_left_search_input notoMid fs-16"
-                placeholder="캠핑장을 검색해주세요"
-              />
-              <button
-                type="button"
-                className="main_title_left_search_btn flex align-center justify-center"
-              >
-                <img src={search} alt="button" />
-              </button>
-            </div>
-            <div className="main_title_left_word flex fs-14 notoMid">
-              {topList}
-            </div>
+            <CampingSearchAll />
           </div>
           <div className="main_title_right">
             <img src={banner} alt="banner" title="banner" />
