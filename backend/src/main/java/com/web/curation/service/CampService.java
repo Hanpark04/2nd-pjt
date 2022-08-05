@@ -10,6 +10,7 @@ import com.web.curation.data.repository.CampRepository;
 import com.web.curation.data.repository.LikedCampRepository;
 import com.web.curation.data.repository.TagRepository;
 import com.web.curation.data.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class CampService{
@@ -74,16 +76,12 @@ public class CampService{
     /* camp 태그 검색 결과 리스트 READ */
     @Transactional(readOnly = true)
     public List<CampDto.CampList> tagSearchCampList(List<String> taglist){
-        List<TagDto.SearchedTag> selecteds = tagRepository.findByHashtag(taglist);
-        System.out.println("넘어옴???");
-        System.out.println(taglist);
-        System.out.println(selecteds.size());
-        List<CampDto.CampList> tagSearchCampList = null;
+        List<TagDto.SearchedTag> selecteds = tagRepository.findDistinctByAndHashtagIn(taglist);
+        List<CampDto.CampList> tagSearchCampList = new ArrayList<>();;
         for (TagDto.SearchedTag s : selecteds){
-            System.out.println("들어감?");
-            System.out.println(s.getCampId());
-            System.out.println(campRepository.findByCampId(s.getCampId()));
-            tagSearchCampList.add(campRepository.findByCampId(s.getCampId()));
+            CampDto.CampList camp = campRepository.getByCampId(s.getCampId());
+            System.out.println(camp.getCampId());
+            tagSearchCampList.add(camp);
         }
 
         return tagSearchCampList;

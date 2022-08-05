@@ -7,9 +7,10 @@ import lombok.*;
 public class TagDto {
 
     @Data
+    @ToString
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @Builder
     public static class Request{
         private int tagId;
         private String hashtag;
@@ -29,7 +30,6 @@ public class TagDto {
         }
     }
 
-    @RequiredArgsConstructor
     @Getter
     public static class Response {
         private int tagId;
@@ -45,7 +45,6 @@ public class TagDto {
         }
     }
 
-    @RequiredArgsConstructor
     @Getter
     public static class SearchedTag {
         private int campId;

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequestMapping("/camp")
 public class CampController {
     private final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
@@ -69,7 +69,6 @@ public class CampController {
     /* camp tag 검색 결과 리스트 READ */
     @GetMapping("/search/tagsearch")
     public List<CampDto.CampList> tagSearchCampList(@RequestParam List<String> taglist){
-        System.out.println(taglist);
         return campService.tagSearchCampList(taglist);
     }
 
