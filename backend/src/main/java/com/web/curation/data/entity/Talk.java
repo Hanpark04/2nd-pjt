@@ -22,14 +22,13 @@ public class Talk {
 
     private LocalDateTime uploadDate;
     private String title;
+    @Lob
+    private String contents;
     private String hashtag;
 
-    @OneToOne
-    @JoinColumn(name = "thumbnailId")
-    private ThumbnailFile thumbnailFile;
-
-    @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL)
-    private List<TalkContent> talkContents;
+//    @OneToOne
+//    @JoinColumn(name = "thumbnailId")
+//    private ThumbnailFile thumbnailFile;
 
     private int click;
 

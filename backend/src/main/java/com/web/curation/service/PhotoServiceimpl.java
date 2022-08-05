@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -84,7 +85,11 @@ public class PhotoServiceimpl implements PhotoService {
 
         CommunityFile communityFile = communityFileRepository.findByCommunity(community);
         photoDto.setFileName(communityFile.getName());
-        photoDto.setFilePath(communityFile.getFilePath());
+
+        String blobFile = encodeBlobToBase64(communityFile.getFile());
+        LOGGER.info("blobFile", blobFile);
+        photoDto.setSaveFile(communityFile.getFile());
+        photoDto.setBlobFile(blobFile);
 
         return photoDto;
     }
@@ -110,15 +115,26 @@ public class PhotoServiceimpl implements PhotoService {
             // 조회수
             photoDto.setClick(community.getClick());
 
-
+            // 사진 넣기
             CommunityFile communityFile = communityFileRepository.findByCommunity(community);
             photoDto.setFileName(communityFile.getName());
-            photoDto.setFilePath(communityFile.getFilePath());
+
+            String blobFile = encodeBlobToBase64(communityFile.getFile());
+
+            photoDto.setSaveFile(communityFile.getFile());
+            photoDto.setBlobFile(blobFile);
 
             listPhoto.add(photoDto);
         }
         
         return listPhoto;
+    }
+    public static String encodeBlobToBase64(byte[] data){
+
+        final String BASE_64_PREFIX = "data:image/png;base64,";
+        String base64Str = Base64Utils.encodeToString(data);
+
+        return BASE_64_PREFIX+base64Str;
     }
     @Transactional
     @Override
@@ -140,7 +156,7 @@ public class PhotoServiceimpl implements PhotoService {
         // communityFile 저장
         CommunityFile communityFile = new CommunityFile();
         communityFile.setCommunity(community);
-        communityFile.setFilePath(photoDto.getFilePath());
+        communityFile.setFile(photoDto.getSaveFile());
         LOGGER.info("photoDto FIleName() : ", photoDto.getFileName());
         communityFile.setName(photoDto.getFileName());
 
@@ -174,7 +190,7 @@ public class PhotoServiceimpl implements PhotoService {
 
         communityFile.setCommunity(community);
         communityFile.setName(photoDto.getFileName());
-        communityFile.setFilePath(photoDto.getFilePath());
+        communityFile.setFile(photoDto.getSaveFile());
 
         communityFileRepository.save(communityFile);
 
@@ -186,12 +202,15 @@ public class PhotoServiceimpl implements PhotoService {
 
     @Override
     public boolean deletePhoto(int boardId) {
-        // 게시글 삭제
+
+        // 게시글 불러오고나서
         Community community = communityRepository.findByBoardId(boardId);
-        communityRepository.delete(community);
-        // 사진 삭제
+        // 사진 삭제한 다음에
         CommunityFile communityFile = communityFileRepository.findByCommunity(community);
         communityFileRepository.delete(communityFile);
+
+        // 게시글 삭제
+        communityRepository.delete(community);
 
         Community verify = communityRepository.findByBoardId(boardId);
 

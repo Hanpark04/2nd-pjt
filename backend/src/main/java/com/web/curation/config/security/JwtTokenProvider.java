@@ -35,7 +35,7 @@ public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String secretKey = "secretKey";
-    private final long accessTokenValidMillisecond = 1000L * 60 * 2; // 1시간 유효 토큰
+    private final long accessTokenValidMillisecond = 1000L * 30; // 1시간 유효 토큰
     private final long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 14; // 2주 유효 토큰
 
     // JwtTokenProvider 시작될 때 초기화
@@ -47,11 +47,11 @@ public class JwtTokenProvider {
     }
 
     //JWT access-token 생성
-    public String createAccessToken(String email){
+    public String createAccessToken(String email, RoleType roleType){
         LOGGER.info("[createToken] 토큰 생성 시작");
         Claims claims = Jwts.claims().setSubject(email);
 
-//        claims.put("role", roleType);
+        claims.put("role", roleType);
         Date now = new Date();
 
         String token = Jwts.builder()
@@ -116,16 +116,25 @@ public class JwtTokenProvider {
      * @param request Http Request Header
      * @return String type Token 값
      */
-    public String resolveToken(HttpServletRequest request) {
-        LOGGER.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
-        return request.getHeader("accessToken");
+    public String resolveToken(HttpServletRequest request, String header) {
+        String bearerToken = request.getHeader(header);
+        if (bearerToken != null && bearerToken.startsWith("Bearer-")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
-    // 리프레시 토큰은 쿠키에서 가져와야 됨!!
-    public String resolveRefreshToken(HttpServletRequest request) throws Exception {
-        String refreshToken = getCookie(request, "refreshToken");
-        LOGGER.info("[resolveRefreshToken] 쿠키에서 Token 값 추출");
-        return refreshToken;
-    }
+//    public String resolveToken(HttpServletRequest request) {
+//        LOGGER.info("[resolveToken] HTTP 헤더에서 accessToken 값 추출");
+//
+//        return request.getHeader("accessToken");
+//    }
+//    // 리프레시 토큰은 쿠키에서 가져와야 됨!!
+//    public String resolveRefreshToken(HttpServletRequest request) throws Exception {
+//        LOGGER.info("[resolveRefreshToken] 쿠키에서 refreshToken 값 추출");
+//        String refreshToken = getCookie(request, "refreshToken");
+//
+//        return refreshToken;
+//    }
 
     // 쿠키에 있는 값 가져오기
     public String getCookie(HttpServletRequest request, String key) throws Exception {
@@ -157,19 +166,13 @@ public class JwtTokenProvider {
 
     // 리프레시 토큰 재발급하기
     @Transactional
-    public String reissueRefreshToken(HttpServletResponse response,String refreshToken) throws RuntimeException{
+    public String reissueRefreshToken(String refreshToken) throws RuntimeException{
         // refresh token을 디비에 있는 값과 비교해보기
         Authentication authentication = getAuthentication(refreshToken);
         RefreshToken findRefreshToken = refreshTokenRepository.findByUserId(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("userId : " + authentication.getName() + " was not found"));
 
         if(findRefreshToken.getToken().equals(refreshToken)){
-            // 기존에 쿠키에 저장되어 있는 리프레시 토큰 삭제하기
-            try {
-                delCookie(response, "refreshToken");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
 
             // 새로운 리프레시 토큰 생성해서 반환
             String newRefreshToken = createRefreshToken(authentication.getName());

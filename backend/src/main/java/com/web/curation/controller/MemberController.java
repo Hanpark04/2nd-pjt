@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequestMapping("/user")
 public class MemberController {
     
@@ -68,7 +68,7 @@ public class MemberController {
 
                 LOGGER.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userDto.getEmail(), loginUser.getAccessToken());
 
-                resultMap.put("accessToken", loginUser.getAccessToken());
+                resultMap.put("Authorization", loginUser.getAccessToken());
                 resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
 
@@ -84,15 +84,23 @@ public class MemberController {
 
                 // 리프레시 토큰 쿠키에 저장하기
                 resultMap.put("refreshToken", loginUser.getRefreshToken());
-                Cookie cookie = new Cookie("refreshToken", loginUser.getRefreshToken());
-                cookie.setMaxAge(7 * 24 * 60 * 60);
-//                cookie.setSecure(true);
-                cookie.setHttpOnly(true);
-                cookie.setPath("/");
+//                ResponseCookie cookie = ResponseCookie.from("refreshToken", loginUser.getRefreshToken())
+//                        .path("/")
+////                        .secure(true)
+//                        .sameSite("None")
+//                        .httpOnly(false)
+//                        .domain("localhost")
+//                        .build();
+//
+//                response.setHeader("Set-Cookie", cookie.toString());
 
-                response.addCookie(cookie);
-
-
+//                Cookie cookie = new Cookie("refreshToken", loginUser.getRefreshToken());
+//                cookie.setMaxAge(7 * 24 * 60 * 60);
+////                cookie.setSecure(true);
+////                cookie.setHttpOnly(true);
+//                cookie.setPath("/");
+//
+//                response.addCookie(cookie);
 
             } else {
 
@@ -159,7 +167,7 @@ public class MemberController {
     }
     // 회원 탈퇴
     @DeleteMapping("/info/{email}")
-    public ResponseEntity<String> deleteMember(@PathVariable("email") String email) {
+    public ResponseEntity<String> deleteMember(@PathVariable("email") String email, HttpServletRequest request) {
         LOGGER.debug("deleteUser - 호출");
 
         if (memberService.deleteUser(email)) {
@@ -170,7 +178,7 @@ public class MemberController {
 
     // 회원정보 수정
     @PutMapping("/info")
-    public ResponseEntity<String> updateMember(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> updateMember(@RequestBody UserDto userDto, HttpServletRequest request) {
         LOGGER.debug("updateUser - 호출");
 
         if (memberService.updateUser(userDto)) {
@@ -180,7 +188,7 @@ public class MemberController {
     }
     private String uploadPath = "/home/ubuntu/app/profile/";
     @PutMapping("/info/profile")
-    public ResponseEntity<String> updateMemberProfile(UserDto userDto, MultipartFile file) {
+    public ResponseEntity<String> updateMemberProfile(UserDto userDto, MultipartFile file, HttpServletRequest request) {
         LOGGER.debug("updateUserProfile - 호출");
 
         if(file.getContentType().startsWith("image") == false){
@@ -220,8 +228,19 @@ public class MemberController {
     // 비밀번호 변경
     // 비밀번호가 포함되어 있어서 body로 받을 것임
     @PutMapping({"/info/pw"})
-    public ResponseEntity<String> updatePassword(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> updatePassword(@RequestBody UserDto userDto, HttpServletRequest request) {
         LOGGER.info("updatePassword 호출");
+
+        if(memberService.updatePsssword(userDto.getEmail(), userDto.getPassword())){
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(FAIL, HttpStatus.NO_CONTENT);
+    }
+    
+    // 비밀번호 잊었을 때 변경
+    @PutMapping({"/pw"})
+    public ResponseEntity<String> forgetPassword(@RequestBody UserDto userDto, HttpServletRequest request) {
+        LOGGER.info("forgetPassword 호출");
 
         if(memberService.updatePsssword(userDto.getEmail(), userDto.getPassword())){
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
@@ -230,8 +249,8 @@ public class MemberController {
     }
 
     // 비밀번호 확인
-    @GetMapping("info/check")
-    public ResponseEntity<String> checkPassword(@RequestBody UserDto userDto){
+    @PostMapping("info/check")
+    public ResponseEntity<String> checkPassword(@RequestBody UserDto userDto, HttpServletRequest request){
         LOGGER.info("checkPassword 호출");
 
         if(memberService.checkPassword(userDto.getEmail(), userDto.getPassword())){

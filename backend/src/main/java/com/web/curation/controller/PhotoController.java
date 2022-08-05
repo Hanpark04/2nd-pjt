@@ -10,10 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -22,7 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequestMapping("/photo")
 public class PhotoController {
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoController.class);
@@ -70,40 +73,54 @@ public class PhotoController {
 
         LOGGER.info("writePhoto - 호출");
 
-        // 이미지 파일이 아닐 때
-        if(file.getContentType().startsWith("image") == false){
-            LOGGER.warn("this file is not image type");
-            resultMap.put("message", FAIL);
-            status = HttpStatus.BAD_REQUEST;
+        String fileName = file.getOriginalFilename();
+        photoDto.setFileName(fileName);
 
-            return new ResponseEntity<>(resultMap, status);
+        byte[] bytes;
+
+        try{
+            bytes = file.getBytes();
+            photoDto.setSaveFile(bytes);
+            LOGGER.info("bytes 파일 {}", bytes.toString().substring(0,11));
+        }  catch (IOException e2){
+            e2.printStackTrace();
         }
+
+
+        // 이미지 파일이 아닐 때
+//        if(file.getContentType().startsWith("image") == false){
+//            LOGGER.warn("this file is not image type");
+//            resultMap.put("message", FAIL);
+//            status = HttpStatus.BAD_REQUEST;
+//
+//            return new ResponseEntity<>(resultMap, status);
+//        }
 
         //브라우저에 따라 업로드하는 파일의 이름은 전체경로일 수도 있고(Internet Explorer),
         //단순히 파일의 이름만을 의미할 수도 있습니다.(chrome browser)
-        String originalName = file.getOriginalFilename();//파일명:모든 경로를 포함한 파일이름
-        String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
-
-        LOGGER.info("fileName" + fileName);
-
-
-        //UUID
-        String uuid = UUID.randomUUID().toString();
-        //저장할 파일 이름 중간에 "_"를 이용하여 구분
-        String saveName = uploadPath + File.separator + File.separator + uuid + "_" + fileName;
-
-        Path savePath = Paths.get(saveName);
-        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
-
-        try {
-            file.transferTo(savePath);
-            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-        } catch (IOException e) {
-            e.printStackTrace();
-            //printStackTrace()를 호출하면 로그에 Stack trace가 출력됩니다.
-        }
-
-        photoDto.setFilePath(savePath.toString());
+//        String originalName = file.getOriginalFilename();//파일명:모든 경로를 포함한 파일이름
+//        String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+//
+//        LOGGER.info("fileName" + fileName);
+//
+//
+//        //UUID
+//        String uuid = UUID.randomUUID().toString();
+//        //저장할 파일 이름 중간에 "_"를 이용하여 구분
+//        String saveName = uploadPath + File.separator + File.separator + uuid + "_" + fileName;
+//
+//        Path savePath = Paths.get(saveName);
+//        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+//
+//        try {
+//            file.transferTo(savePath);
+//            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            //printStackTrace()를 호출하면 로그에 Stack trace가 출력됩니다.
+//        }
+//
+//        photoDto.setFilePath(savePath.toString());
 
         int result = photoService.writePhoto(photoDto);
         if (result != 0) {
@@ -125,7 +142,42 @@ public class PhotoController {
         LOGGER.info("updatePhoto - 호출");
 //        LOGGER.info(photoDto.getTitle());
 
-        photoDto.setFilePath(file.getOriginalFilename());
+//        String originalName = file.getOriginalFilename();//파일명:모든 경로를 포함한 파일이름
+//        String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+//
+//        LOGGER.info("fileName" + fileName);
+//
+//
+//        //UUID
+//        String uuid = UUID.randomUUID().toString();
+//        //저장할 파일 이름 중간에 "_"를 이용하여 구분
+//        String saveName = uploadPath + File.separator + File.separator + uuid + "_" + fileName;
+//
+//        Path savePath = Paths.get(saveName);
+//        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+//
+//        try {
+//            file.transferTo(savePath);
+//            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            //printStackTrace()를 호출하면 로그에 Stack trace가 출력됩니다.
+//        }
+//
+//        photoDto.setFilePath(savePath.toString());
+
+        String fileName = file.getOriginalFilename();
+        photoDto.setFileName(fileName);
+        byte[] bytes;
+
+        try{
+            bytes = file.getBytes();
+            photoDto.setSaveFile(bytes);
+            LOGGER.info("bytes 파일 {}", bytes.toString().substring(0,11));
+        }  catch (IOException e2){
+            e2.printStackTrace();
+        }
+
         if (photoService.updatePhoto(photoDto)) {
             return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
         }
