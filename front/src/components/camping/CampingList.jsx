@@ -7,7 +7,6 @@ import { getCamplist } from "../../apis/camp";
 // eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
 import CampingCard from "./CampingCard";
 import { reset, setCampList } from "../../store/camp";
-// import { search } from "../../store/camp";
 
 function CampingList() {
   const dispatch = useDispatch();
@@ -19,14 +18,14 @@ function CampingList() {
   console.log(list, dispatch);
   useEffect(() => {
     dispatch(setCampList("123"));
-    // await 를 사용하기 위해서 Async 선언
     // async function getAndSetCampList() {
-    //   const res = await getCamplist(page);
+      const res = await getCamplist();
+      dispatch(setCampList([...list,res.list]));
     //   // setCampList(res.slice(10));
     //   // setCampList([...campList, ...res]);
     //   // dispatch(reset());
     //   // dispatch(
-    //   //   search({
+    //   //   search({ 
     //   //     page,
     //   //     campList
     //   //   })
@@ -63,14 +62,4 @@ function CampingList() {
   );
 }
 
-// CampingList.defaultProps = {
-//   facltNm: null,
-//   add1: null,
-//   homepage: null
-// };
-// CampingList.propTypes = {
-//   facltNm: PropTypes.string,
-//   add1: PropTypes.string,
-//   homepage: PropTypes.string
-// };
 export default CampingList;
