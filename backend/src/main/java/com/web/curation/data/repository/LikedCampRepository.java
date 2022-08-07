@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface LikedCampRepository  extends JpaRepository<LikedCampList, Integer> {
     LikedCampList getById(int saveId);
-    List<LikedCampList> findAllByUserAndAndStartDateAfter(User user, LocalDate now);
+    List<LikedCampList> findAllByUserAndAndStartDateAfter(User user, String now);
 }

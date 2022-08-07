@@ -37,7 +37,7 @@ public class ScheduleController {
 
     /* 일정리스트 READ - 곧 다가올 캠핑 -> 현재일 - 시작일 */
     @GetMapping("/upcomming")
-    public List<LikedCampList> upcomingList(@RequestParam String email, @RequestParam LocalDate now){
+    public List<LikedCampList> upcomingList(@RequestParam String email, @RequestParam String now){
         return scheduleService.upcomingList(email, now);
     }
 
