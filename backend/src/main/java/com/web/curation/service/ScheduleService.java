@@ -35,6 +35,20 @@ public class ScheduleService {
         return upcomingList;
     }
 
+    @Transactional(readOnly = true)
+    public List<ScheduleDto.Response> ongoingList(String email, String now){
+        User user = userRepository.getByEmail(email);
+        List<ScheduleDto.Response> ongoingList = likedCampRepository.findAllByUserAndAndStartDateBeforeAndEndDateAfter(user, now, now);
+        return ongoingList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ScheduleDto.Response> endList(String email, String now){
+        User user = userRepository.getByEmail(email);
+        List<ScheduleDto.Response> endList = likedCampRepository.findAllByUserAndAndEndDateBefore(user, now);
+        return endList;
+    }
+
 
     @Transactional(readOnly = true)
     public ScheduleDto.ScheduleDetail scheduleDetailRead(int saveId) {

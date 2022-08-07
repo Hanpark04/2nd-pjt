@@ -41,16 +41,16 @@ public class ScheduleController {
         return scheduleService.upcomingList(email, now);
     }
 
-//    /* 일정리스트 READ - 진행중 캠핑 -> 시작일 - 현재일 - 끝일 */
-//    @GetMapping("")
-//    public List<ScheduleDto.Response> scheduleListNowRead(){
-//        return
-//    }
-//    /* 일정리스트 READ - 지난 캠핑 -> 끝일 - 현재일 */
-//    @GetMapping("")
-//    public List<ScheduleDto.Response> scheduleListEndRead(){
-//        return
-//    }
+    /* 일정리스트 READ - 진행중 캠핑 -> 시작일 - 현재일 - 끝일 */
+    @GetMapping("/ongoing")
+    public List<ScheduleDto.Response> ongoingList(@RequestParam String email, @RequestParam String now){
+        return scheduleService.ongoingList(email, now);
+    }
+    /* 일정리스트 READ - 지난 캠핑 -> 끝일 - 현재일 */
+    @GetMapping("")
+    public List<ScheduleDto.Response> endList(@RequestParam String email, @RequestParam String now){
+        return scheduleService.endList(email, now);
+    }
 
     /* 일정 READ */
     @GetMapping("/{saveId}")
