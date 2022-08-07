@@ -13,6 +13,9 @@ import FindIdFinish from "@screens/user/FindIdFinish";
 import FindPw from "@screens/user/FindPw";
 import FindPwCh from "@screens/user/FindPwCh";
 import FindPwFinish from "@screens/user/FindPwFinish";
+import KakaoLogin from "@screens/oauth/KakaoLogin";
+import NaverLogin from "@screens/oauth/NaverLogin";
+import GoogleLogin from "@screens/oauth/GoogleLogin";
 // mypage
 import Drop from "@screens/mypage/Drop";
 import DropFinish from "@screens/mypage/DropFinish";
@@ -37,6 +40,7 @@ import CampingDetail from "@screens/camping/CampingDetail";
 import PlanMain from "@screens/plan/PlanMain";
 import PlanDetail from "@screens/plan/PlanDetail";
 
+
 function Router() {
   return (
     <>
@@ -48,7 +52,9 @@ function Router() {
 
         {/* login */}
         <Route path="/login" element={<Login />} />
-
+        <Route path="/kakao" element={<KakaoLogin />} />
+        <Route path="/naver" element={<NaverLogin />} />
+        <Route path="/google" element={<GoogleLogin />} />
         {/* join */}
         <Route path="/join/*">
           <Route index element={<Join />} />

@@ -4,6 +4,8 @@ import TodoList from "@components/plan/TodoList";
 import mainImg from "@images/temp_1.jpeg";
 import { useParams } from "react-router-dom";
 import { getPlanDetail } from "../../apis/plan";
+// import TodoItemList from "@components/plan/TodoItemList";
+// import Location from "@components/common/Location";
 
 function PlanDetail() {
   // const startDate = "";
@@ -49,6 +51,7 @@ function PlanDetail() {
             <TodoList />
           </div>
         </div>
+        <div className="plan_detail_map">{/* <Location /> */}</div>
       </div>
     </div>
   );
