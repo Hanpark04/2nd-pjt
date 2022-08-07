@@ -29,9 +29,9 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public List<LikedCampList> upcomingList(String email, String now){
+    public List<ScheduleDto.Response> upcomingList(String email, String now){
         User user = userRepository.getByEmail(email);
-        List<LikedCampList> upcomingList = likedCampRepository.findAllByUserAndAndStartDateAfter(user, now);
+        List<ScheduleDto.Response> upcomingList = likedCampRepository.findAllByUserAndAndStartDateAfter(user, now);
         return upcomingList;
     }
 
