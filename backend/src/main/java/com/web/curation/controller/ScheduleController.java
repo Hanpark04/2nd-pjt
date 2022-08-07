@@ -3,6 +3,7 @@ package com.web.curation.controller;
 import com.web.curation.config.security.JwtTokenProvider;
 import com.web.curation.data.dto.ScheduleDto;
 import com.web.curation.data.dto.TodoDto;
+import com.web.curation.data.entity.LikedCampList;
 import com.web.curation.service.MemberService;
 import com.web.curation.service.ScheduleService;
 import com.web.curation.service.TodoService;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -32,11 +34,13 @@ public class ScheduleController {
         this.todoService = todoService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
-//    /* 일정리스트 READ - 곧 다가올 캠핑 -> 현재일 - 시작일 */
-//    @GetMapping("")
-//    public List<ScheduleDto.Response> scheduleListAfterRead(){
-//        return
-//    }
+
+    /* 일정리스트 READ - 곧 다가올 캠핑 -> 현재일 - 시작일 */
+    @GetMapping("/upcomming")
+    public List<LikedCampList> upcomingList(@RequestParam String email, @RequestParam LocalDate now){
+        return scheduleService.upcomingList(email, now);
+    }
+
 //    /* 일정리스트 READ - 진행중 캠핑 -> 시작일 - 현재일 - 끝일 */
 //    @GetMapping("")
 //    public List<ScheduleDto.Response> scheduleListNowRead(){
