@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import CampingList from "@components/camping/CampingList";
 import "./CampingMain.scss";
+// import { useSelector } from "react-redux";
 import banner from "@images/temp_1.jpeg"; // banner 이미지
-
 import {
   CampingSearchLoca,
   CampingSearchTag,
   CampingSearchAll
 } from "@components/camping/CampingSearch";
+// import { click } from "../../store/camp";
 
 function CampingMain() {
+  // const dispatch = useDispatch();
   // const top = "싸피 캠핑장";
+  // dispatch(click( allList: true ));
+  // const allList = useSelector(state => state.campSearch.click.allClick);
+  // const keywordList = useSelector(state => state.campSearch.click.keywordClick);
+  // const [tagList, setTagList] = useState(false);
+  // const [locaList, setLocaList] = useState(false);
   const [visibleTag, setVisibleTag] = useState(true);
   const [visibleLoca, setVisibleLoca] = useState(false);
 
@@ -77,6 +84,7 @@ function CampingMain() {
           </select>
         </div>
         <div className="divide" />
+        {/* {allList && <CampingList />} */}
         <CampingList />
       </div>
     </div>

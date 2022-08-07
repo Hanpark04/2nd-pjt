@@ -24,9 +24,25 @@ export const searchAll = async keyword => {
   return res.data;
 };
 
-// export const getLocation = async () => {
-//   const res = await API.get(`/camp/`);
-//   return res.data;
-// }
+export const searchLocation = async (doName, gunName) => {
+  const res = await API.get(`/camp/search/${doName}/${gunName}`);
+  return res.data;
+};
 
+export const searchTag = async tag => {
+  const res = await API.get(`/camp/${tag}`);
+  return res.data;
+};
+export const getSido = async () => {
+  const res = await API.get("/region");
+
+  return res.data;
+};
+
+export const getGun = async sidocode => {
+  const res = await API.get(`/region/sidocode`, {
+    params: { sidocode }
+  });
+  return res.data;
+};
 export const ex = () => {};

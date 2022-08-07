@@ -1,29 +1,38 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { useInView } from "react-intersection-observer";
-// import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
 import { getCamplist } from "../../apis/camp";
 // eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
 import CampingCard from "./CampingCard";
+import { reset, setCampList } from "../../store/camp";
+// import { search } from "../../store/camp";
 
 function CampingList() {
-  const [campList, setCampList] = useState([]);
-  const [page, setPage] = useState(1); // 현ㅈㅐ 페이지
+  const dispatch = useDispatch();
+  // const [campList, setCampList] = useState([]);
+  const [page, setPage] = useState(0); // 현재 페이지
   const [loading, setLoading] = useState(false);
-
+  const list = useSelector(state => state.campSearch.campList);
   const [ref, inView] = useInView();
-
-  // const observer = new IntersectionObserver(callback, o);
-
+  console.log(list, dispatch);
   useEffect(() => {
+    dispatch(setCampList("123"));
     // await 를 사용하기 위해서 Async 선언
-    async function getAndSetCampList() {
-      const res = await getCamplist(page);
-      // setCampList(res.slice(10));
-      setCampList([...campList, ...res]);
-      // setCampList(res);
-    }
-    getAndSetCampList();
+    // async function getAndSetCampList() {
+    //   const res = await getCamplist(page);
+    //   // setCampList(res.slice(10));
+    //   // setCampList([...campList, ...res]);
+    //   // dispatch(reset());
+    //   // dispatch(
+    //   //   search({
+    //   //     page,
+    //   //     campList
+    //   //   })
+    //   // );
+    // }
+    // getAndSetCampList();
     setLoading(false);
   }, [page]);
 
@@ -37,7 +46,7 @@ function CampingList() {
 
   return (
     <div className="">
-      {campList.length !== 0 &&
+      {/* {campList.length !== 0 &&
         campList.map(({ campId, facltNm, addr1, homepage, firstImageUrl }) => (
           <CampingCard
             key={v4()}
@@ -47,7 +56,7 @@ function CampingList() {
             homepage={homepage}
             firstImageUrl={firstImageUrl}
           />
-        ))}
+        ))} */}
 
       {loading ? <div>로딩중</div> : <div ref={ref} className="obe" />}
     </div>
