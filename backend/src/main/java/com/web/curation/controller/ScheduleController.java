@@ -47,7 +47,7 @@ public class ScheduleController {
         return scheduleService.ongoingList(email, now);
     }
     /* 일정리스트 READ - 지난 캠핑 -> 끝일 - 현재일 */
-    @GetMapping("")
+    @GetMapping("/endlist")
     public List<ScheduleDto.Response> endList(@RequestParam String email, @RequestParam String now){
         return scheduleService.endList(email, now);
     }
