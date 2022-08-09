@@ -19,10 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 //@CrossOrigin("*")
@@ -40,26 +37,45 @@ public class CampController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-//    /* campList and Search */
-//    @PostMapping()
-//    public List<CampDto.CampList> filterCampList(@RequestBody SearchListDto.SearchList searchList){
+    /* campList and Search */
+    @PostMapping()
+    public List<CampDto.CampList> filterCampList(@RequestBody SearchListDto.SearchList searchList){
+        List<TotalCampList> totalCampLists = new ArrayList<>();
+        List<CampDto.CampList> filterCampList = new ArrayList<>();
+        /* 전체 리스트 */
+        if(searchList.getKeyword()==null && searchList.getTags()==null &&
+        searchList.getGugun()==null && searchList.getSido()==null){
+            totalCampLists = campService.getAllCamps();
+        }
+        /* 키워드 검색 필터링 */
+        if (searchList.getKeyword() != null){
+            List<TotalCampList> kwSid = campService.keywordSearchCampList(searchList.getKeyword());
+            for (TotalCampList k : kwSid){
+                totalCampLists.remove(k);
+            }
+        }
+
+        /* 지역 검색 필터링 */
+        if ()
+
+//        if()
 //
-//        HashMap<String, List> taglist = new HashMap<String, List>() {{
-//            put(1,["봄","여름","가을","겨울"]);
-//            put()
+//
+//        HashMap<Integer, List<String>> taglist = new HashMap<Integer, List<String>>() {{
+//
 //        }};
-//
-//        List<CampDto.CampList> filterCampList = new ArrayList<>();
-//
-//    }
 
 
-    /* campList READ */
-    @GetMapping()
-    public List<CampDto.CampList> getAllCamps(@RequestParam int page){
-        System.out.println(page);
-        return campService.getAllCamps(page);
+
     }
+
+
+//    /* campList READ */
+//    @GetMapping()
+//    public List<CampDto.CampList> getAllCamps(@RequestParam int page){
+//        System.out.println(page);
+//        return campService.getAllCamps(page);
+//    }
 
 
     /* campDetail READ */
@@ -70,12 +86,12 @@ public class CampController {
 
     }
 
-    /* camp 키워드 검색 결과 리스트 READ */
-    @GetMapping("/search/{keyword}")
-    public List<CampDto.CampList> keywordSearchCampList(@PathVariable("keyword") String keyword){
-        System.out.println(keyword);
-        return campService.keywordSearchCampList(keyword);
-    }
+//    /* camp 키워드 검색 결과 리스트 READ */
+//    @GetMapping("/search/{keyword}")
+//    public List<CampDto.CampList> keywordSearchCampList(@PathVariable("keyword") String keyword){
+//        System.out.println(keyword);
+//        return campService.keywordSearchCampList(keyword);
+//    }
 
     /* camp 지역 검색 결과 리스트 READ */
     @GetMapping("/search/{doname}/{sigungu}")

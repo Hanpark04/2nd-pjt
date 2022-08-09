@@ -50,6 +50,12 @@ public class CampService{
         return rttotalCampList;
     }
 
+    public List<TotalCampList> getAllCamps() {
+        List<TotalCampList> totalCampList = campRepository.findAll();
+        return totalCampList;
+    }
+
+
     /* campDetail READ */
     @Transactional(readOnly = true)
     public CampDto.CampDetail campDetailRead(int campId) {
@@ -61,8 +67,8 @@ public class CampService{
 
     /* camp 키워드 검색 결과 리스트 READ */
     @Transactional(readOnly = true)
-    public List<CampDto.CampList> keywordSearchCampList(String keyword){
-        List<CampDto.CampList> kwSearchCampList = campRepository.findByFacltNmContains(keyword);
+    public List<TotalCampList> keywordSearchCampList(String keyword){
+        List<TotalCampList> kwSearchCampList = campRepository.findByFacltNmNotContains(keyword);
         return kwSearchCampList;
     }
 
