@@ -2,6 +2,7 @@ package com.web.curation.service;
 
 import com.web.curation.data.dto.CampDto;
 import com.web.curation.data.dto.ScheduleDto;
+import com.web.curation.data.dto.SearchListDto;
 import com.web.curation.data.dto.TagDto;
 import com.web.curation.data.entity.LikedCampList;
 import com.web.curation.data.entity.TotalCampList;
@@ -13,11 +14,14 @@ import com.web.curation.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +40,55 @@ public class CampService{
         this.userRepository = userRepository;
         this.tagRepository = tagRepository;
     }
+
+    public List<CampDto.CampList> filterCampList(SearchListDto.SearchList searchList){
+        List<TotalCampList> totalCampLists = new ArrayList<>();
+        List<CampDto.CampList> filterCampList = new ArrayList<>();
+        /* 전체 리스트 */
+        if(searchList.getKeyword()==null && searchList.getTags()==null &&
+                searchList.getGugun()==null && searchList.getSido()==null){
+            totalCampLists = getAllCamps();
+        }
+        /* 키워드 검색 필터링 */
+        if (searchList.getKeyword() != null){
+            List<TotalCampList> kwSid = keywordSearchCampList(searchList.getKeyword());
+            for (TotalCampList k : kwSid){
+                totalCampLists.remove(k);
+            }
+        }
+
+        /* 지역 검색 필터링 */
+        if (searchList.getSido() != null && searchList.getGugun() != null){
+            List<TotalCampList> rgSlist = regionSearchCampList(searchList.getSido(), searchList.getGugun());
+            for (TotalCampList r : rgSlist){
+                totalCampLists.remove(r);
+            }
+        }
+
+        /* 태그 겁색 필터링 */
+        if (searchList.getTags() != null){
+            List<TotalCampList> tagSearchCampList = tagSearchCampList(Arrays.asList(searchList.getTags()));
+            for (TotalCampList ts : tagSearchCampList){
+                totalCampLists.add(ts);
+            }
+        }
+
+        Pageable pageable = PageRequest.of(searchList.getPage(), 10);
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), totalCampLists.size());
+        Page<TotalCampList> ptl = new PageImpl<>(totalCampLists.subList(start,end),pageable ,totalCampLists.size());
+
+        for (TotalCampList cl : ptl){
+            CampDto.CampList tcl = new CampDto.CampList(cl);
+            filterCampList.add(tcl);
+        }
+
+        return filterCampList;
+    }
+
+
+
+
 
     /* campList READ */
     @Transactional(readOnly = true)
@@ -74,20 +127,19 @@ public class CampService{
 
     /* camp 지역 검색 결과 리스트 READ */
     @Transactional(readOnly = true)
-    public List<CampDto.CampList> regionSearchCampList(String doname, String sigungu){
-        List<CampDto.CampList> regionSearchCampList = campRepository.findByDoNmAndSigunguNmStartsWith(doname,sigungu);
+    public List<TotalCampList> regionSearchCampList(String doname, String sigungu){
+        List<TotalCampList> regionSearchCampList = campRepository.findByDoNmAndSigunguNmStartsWith(doname,sigungu);
         return regionSearchCampList;
     }
 
     /* camp 태그 검색 결과 리스트 READ */
     @Transactional(readOnly = true)
-    public List<CampDto.CampList> tagSearchCampList(List<String> taglist, int page){
-        PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<TagDto.SearchedTag> selecteds = tagRepository.findDistinctByAndHashtagIn(taglist, pageRequest);
+    public List<TotalCampList> tagSearchCampList(List<String> taglist){
+        List<TagDto.SearchedTag> selecteds = tagRepository.findDistinctByAndHashtagIn(taglist);
 
-        List<CampDto.CampList> tagSearchCampList = new ArrayList<>();;
+        List<TotalCampList> tagSearchCampList = new ArrayList<>();;
         for (TagDto.SearchedTag s : selecteds){
-            CampDto.CampList camp = campRepository.getByCampId(s.getCampId());
+            TotalCampList camp = campRepository.getByCampId(s.getCampId());
             System.out.println(camp.getCampId());
             tagSearchCampList.add(camp);
         }

@@ -40,33 +40,8 @@ public class CampController {
     /* campList and Search */
     @PostMapping()
     public List<CampDto.CampList> filterCampList(@RequestBody SearchListDto.SearchList searchList){
-        List<TotalCampList> totalCampLists = new ArrayList<>();
-        List<CampDto.CampList> filterCampList = new ArrayList<>();
-        /* 전체 리스트 */
-        if(searchList.getKeyword()==null && searchList.getTags()==null &&
-        searchList.getGugun()==null && searchList.getSido()==null){
-            totalCampLists = campService.getAllCamps();
-        }
-        /* 키워드 검색 필터링 */
-        if (searchList.getKeyword() != null){
-            List<TotalCampList> kwSid = campService.keywordSearchCampList(searchList.getKeyword());
-            for (TotalCampList k : kwSid){
-                totalCampLists.remove(k);
-            }
-        }
-
-        /* 지역 검색 필터링 */
-        if ()
-
-//        if()
-//
-//
-//        HashMap<Integer, List<String>> taglist = new HashMap<Integer, List<String>>() {{
-//
-//        }};
-
-
-
+        LOGGER.info("filterCampList - 호출");
+        return campService.filterCampList(searchList);
     }
 
 
@@ -93,17 +68,17 @@ public class CampController {
 //        return campService.keywordSearchCampList(keyword);
 //    }
 
-    /* camp 지역 검색 결과 리스트 READ */
-    @GetMapping("/search/{doname}/{sigungu}")
-    public List<CampDto.CampList> regionSearchCampList(@PathVariable("doname") String doname, @PathVariable("sigungu") String sigungu){
-        return campService.regionSearchCampList(doname, sigungu);
-    }
+//    /* camp 지역 검색 결과 리스트 READ */
+//    @GetMapping("/search/{doname}/{sigungu}")
+//    public List<CampDto.CampList> regionSearchCampList(@PathVariable("doname") String doname, @PathVariable("sigungu") String sigungu){
+//        return campService.regionSearchCampList(doname, sigungu);
+//    }
 
-    /* camp tag 검색 결과 리스트 READ */
-    @GetMapping("/search/tagsearch")
-    public List<CampDto.CampList> tagSearchCampList(@RequestParam List<String> taglist, @RequestParam int page){
-        return campService.tagSearchCampList(taglist, page);
-    }
+//    /* camp tag 검색 결과 리스트 READ */
+//    @GetMapping("/search/tagsearch")
+//    public List<CampDto.CampList> tagSearchCampList(@RequestParam List<String> taglist, @RequestParam int page){
+//        return campService.tagSearchCampList(taglist, page);
+//    }
 
     /*
     likedCampList(schedule) CREATE
