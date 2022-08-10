@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class SearchListDto {
@@ -16,7 +18,7 @@ public class SearchListDto {
         private String keyword;
         private String sido;
         private String gugun;
-        private String[] tags;
+        private List<String> tags;
         private int page;
 
         public SearchList(SearchList searchList){

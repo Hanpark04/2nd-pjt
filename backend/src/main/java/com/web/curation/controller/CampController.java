@@ -19,30 +19,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.*;
 
 @RestController
 //@CrossOrigin("*")
 @RequestMapping("/camp")
 public class CampController {
-    private final Logger LOGGER = LoggerFactory.getLogger(ScheduleController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(CampController.class);
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
     private final CampService campService;
     private final JwtTokenProvider jwtTokenProvider;
+    EntityManager entityManager;
 
     @Autowired
     public CampController(CampService campService, JwtTokenProvider jwtTokenProvider) {
         this.campService = campService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
-    /* campList and Search */
     @PostMapping()
-    public List<CampDto.CampList> filterCampList(@RequestBody SearchListDto.SearchList searchList){
-        LOGGER.info("filterCampList - 호출");
-        return campService.filterCampList(searchList);
+    public List<CampDto.CampList> filterCampList(@RequestBody SearchListDto.SearchList searchList) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CampDto.CampList> criteriaQuery = criteriaBuilder.createQuery(CampDto.CampList.class);
+
+
     }
+
+
+//    /* campList and Search */
+//    @PostMapping()
+//    public List<CampDto.CampList> filterCampList(@RequestBody SearchListDto.SearchList searchList){
+//        LOGGER.info("filterCampList - 호출");
+//        System.out.println("controller");
+//        System.out.println(searchList.getTags());
+//        return campService.filterCampList(searchList);
+//    }
 
 
 //    /* campList READ */

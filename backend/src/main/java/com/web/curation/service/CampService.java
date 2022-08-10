@@ -4,6 +4,7 @@ import com.web.curation.data.dto.CampDto;
 import com.web.curation.data.dto.ScheduleDto;
 import com.web.curation.data.dto.SearchListDto;
 import com.web.curation.data.dto.TagDto;
+import com.web.curation.data.entity.CampTag;
 import com.web.curation.data.entity.LikedCampList;
 import com.web.curation.data.entity.TotalCampList;
 import com.web.curation.data.entity.User;
@@ -13,17 +14,15 @@ import com.web.curation.data.repository.TagRepository;
 import com.web.curation.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -32,6 +31,7 @@ public class CampService{
     private final LikedCampRepository likedCampRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    EntityManager entityManager;
 
     @Autowired
     public CampService(CampRepository campRepository, LikedCampRepository likedCampRepository, UserRepository userRepository, TagRepository tagRepository) {
@@ -41,50 +41,130 @@ public class CampService{
         this.tagRepository = tagRepository;
     }
 
-    public List<CampDto.CampList> filterCampList(SearchListDto.SearchList searchList){
-        List<TotalCampList> totalCampLists = new ArrayList<>();
-        List<CampDto.CampList> filterCampList = new ArrayList<>();
-        /* 전체 리스트 */
-        if(searchList.getKeyword()==null && searchList.getTags()==null &&
-                searchList.getGugun()==null && searchList.getSido()==null){
-            totalCampLists = getAllCamps();
-        }
-        /* 키워드 검색 필터링 */
-        if (searchList.getKeyword() != null){
-            List<TotalCampList> kwSid = keywordSearchCampList(searchList.getKeyword());
-            for (TotalCampList k : kwSid){
-                totalCampLists.remove(k);
-            }
-        }
+    public List<TotalCampList> filterCampList(SearchListDto.SearchList searchList) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<TotalCampList> criteriaQuery = criteriaBuilder.createQuery(TotalCampList.class);
+        Root<TotalCampList> cl = criteriaQuery.from(TotalCampList.class); // from 절 같은 역할 -> root : 영속적 엔티티
 
-        /* 지역 검색 필터링 */
-        if (searchList.getSido() != null && searchList.getGugun() != null){
-            List<TotalCampList> rgSlist = regionSearchCampList(searchList.getSido(), searchList.getGugun());
-            for (TotalCampList r : rgSlist){
-                totalCampLists.remove(r);
-            }
-        }
+        String keyword = "%"+searchList.getKeyword()+"%";
+        String sido = searchList.getSido()+"%";
+        String sigungu = searchList.getGugun()+"%";
+        Predicate keywordSearch = criteriaBuilder.like(cl.get("facltNm"),keyword);
+        Predicate regionSearchdoNm = criteriaBuilder.like(cl.get("doNm"),sido);
+        Predicate regionSearchsigungu = criteriaBuilder.like(cl.get("sigunguNm"),sigungu);
+        Predicate regionSearch = criteriaBuilder.and(regionSearchdoNm,regionSearchsigungu);
 
-        /* 태그 겁색 필터링 */
-        if (searchList.getTags() != null){
-            List<TotalCampList> tagSearchCampList = tagSearchCampList(Arrays.asList(searchList.getTags()));
-            for (TotalCampList ts : tagSearchCampList){
-                totalCampLists.add(ts);
-            }
+
+        // 서브쿼리
+        Subquery<Integer> subquery = criteriaQuery.subquery(Integer.class);
+        Root<TotalCampList> tagCamp = subquery.from(TotalCampList.class);
+//        Join<TotalCampList, CampTag> ts = tagCamp.join("campId");
+        subquery.select();
+
+
+        List<Predicate> tagSearchsc = new ArrayList<>();
+        for (String tag : searchList.getTags()){
+            tagSearchsc.add(criteriaBuilder.like(tagCamp.get("hashtag"),tag));
         }
 
-        Pageable pageable = PageRequest.of(searchList.getPage(), 10);
-        final int start = (int)pageable.getOffset();
-        final int end = Math.min((start + pageable.getPageSize()), totalCampLists.size());
-        Page<TotalCampList> ptl = new PageImpl<>(totalCampLists.subList(start,end),pageable ,totalCampLists.size());
 
-        for (TotalCampList cl : ptl){
-            CampDto.CampList tcl = new CampDto.CampList(cl);
-            filterCampList.add(tcl);
-        }
+        criteriaQuery.where()
 
-        return filterCampList;
     }
+
+    public List<TotalCampList> findSearchedResult(SearchListDto.SearchList searchListDto){
+        Map<String, Object> searchKeys = new HashMap<>();
+
+        if (searchListDto.getKeyword() != null) searchKeys.put("keyword", searchListDto.getKeyword());
+        if (searchListDto.getSido() != null) searchKeys.put("sido", searchListDto.getSido());
+        if (searchListDto.getGugun() != null) searchKeys.put("gugun", searchListDto.getGugun());
+        if (searchListDto.getTags() != null) searchKeys.put("tags", searchListDto.getTags());
+
+        searchKeys.put("arrange",searchListDto.getArrange());
+
+        return campRepository.findAll(filterCampList(searchKeys))
+                .stream().map(s -> new TotalCampList((TotalCampList) s))
+                .collect(Collectors.toList());
+    }
+
+    public Specification<TotalCampList> filterCampList(Map<String, Object> searchKey){
+        return ((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            searchKey.forEach((key, value) -> {
+                String likeValue = "%" + value + "%";
+
+                switch (key){
+                    case "keyword":
+                        Predicate keyword = criteriaBuilder.like(root.get("facltNm"),likeValue);
+                        predicates.add(keyword);
+                        break;
+
+                    case "sido" :
+                        Predicate sido = criteriaBuilder.like(root.get("doNm"),likeValue);
+                        predicates.add(sido);
+
+                    case "gugun" :
+                        Predicate gugun = criteriaBuilder.like(root.get("doNm"),likeValue);
+                        predicates.add(sido);
+                }
+
+
+            for (String key : searchKey.keySet()){
+                predicates.add(criteriaBuilder.equal(root.get(key),searchKey.get(key)));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
+    }
+
+
+
+
+
+//    public List<CampDto.CampList> filterCampList(SearchListDto.SearchList searchList){
+//        List<TotalCampList> totalCampLists = new ArrayList<>();
+//        List<CampDto.CampList> filterCampList = new ArrayList<>();
+//        /* 전체 리스트 */
+//        if(searchList.getKeyword()==null && searchList.getTags()==null &&
+//                searchList.getGugun()==null && searchList.getSido()==null){
+//            totalCampLists = getAllCamps();
+//        }
+//        /* 키워드 검색 필터링 */
+//        if (searchList.getKeyword() != null){
+//            List<TotalCampList> kwSid = keywordSearchCampList(searchList.getKeyword());
+//            for (TotalCampList k : kwSid){
+//                totalCampLists.remove(k);
+//            }
+//        }
+//
+//        /* 지역 검색 필터링 */
+//        if (searchList.getSido() != null && searchList.getGugun() != null){
+//            List<TotalCampList> rgSlist = regionSearchCampList(searchList.getSido(), searchList.getGugun());
+//            for (TotalCampList r : rgSlist){
+//                totalCampLists.remove(r);
+//            }
+//        }
+//
+//        /* 태그 겁색 필터링 */
+//        if (searchList.getTags() != null){
+//            List<TotalCampList> tagSearchCampList = tagSearchCampList(searchList.getTags());
+//            for (TotalCampList ts : tagSearchCampList){
+//                totalCampLists.add(ts);
+//            }
+//        }
+//
+//        Pageable pageable = PageRequest.of(searchList.getPage(), 10);
+//        final int start = (int)pageable.getOffset();
+//        final int end = Math.min((start + pageable.getPageSize()), totalCampLists.size());
+//        Page<TotalCampList> ptl = new PageImpl<>(totalCampLists.subList(start,end),pageable ,totalCampLists.size());
+//
+//        for (TotalCampList cl : ptl){
+//            CampDto.CampList tcl = new CampDto.CampList(cl);
+//            filterCampList.add(tcl);
+//        }
+//
+//        return filterCampList;
+//    }
 
 
 
