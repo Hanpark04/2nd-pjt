@@ -42,10 +42,8 @@ public class CampController {
     }
     @PostMapping()
     public List<CampDto.CampList> filterCampList(@RequestBody SearchListDto.SearchList searchList) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CampDto.CampList> criteriaQuery = criteriaBuilder.createQuery(CampDto.CampList.class);
-
-
+        LOGGER.info("filterCampList - 호출");
+        return campService.filterCampList(searchList);
     }
 
 

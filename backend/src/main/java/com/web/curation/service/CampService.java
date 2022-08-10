@@ -41,82 +41,67 @@ public class CampService{
         this.tagRepository = tagRepository;
     }
 
-    public List<TotalCampList> filterCampList(SearchListDto.SearchList searchList) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<TotalCampList> criteriaQuery = criteriaBuilder.createQuery(TotalCampList.class);
-        Root<TotalCampList> cl = criteriaQuery.from(TotalCampList.class); // from 절 같은 역할 -> root : 영속적 엔티티
+    public List<CampDto.CampList> filterCampList(SearchListDto.SearchList searchList) {
 
-        String keyword = "%"+searchList.getKeyword()+"%";
-        String sido = searchList.getSido()+"%";
-        String sigungu = searchList.getGugun()+"%";
-        Predicate keywordSearch = criteriaBuilder.like(cl.get("facltNm"),keyword);
-        Predicate regionSearchdoNm = criteriaBuilder.like(cl.get("doNm"),sido);
-        Predicate regionSearchsigungu = criteriaBuilder.like(cl.get("sigunguNm"),sigungu);
-        Predicate regionSearch = criteriaBuilder.and(regionSearchdoNm,regionSearchsigungu);
+        List<TotalCampList> totalCampLists = new ArrayList<>();
 
-
-        // 서브쿼리
-        Subquery<Integer> subquery = criteriaQuery.subquery(Integer.class);
-        Root<TotalCampList> tagCamp = subquery.from(TotalCampList.class);
-//        Join<TotalCampList, CampTag> ts = tagCamp.join("campId");
-        subquery.select();
-
-
-        List<Predicate> tagSearchsc = new ArrayList<>();
-        for (String tag : searchList.getTags()){
-            tagSearchsc.add(criteriaBuilder.like(tagCamp.get("hashtag"),tag));
+        if(searchList.getKeyword()==null && searchList.getTags().isEmpty() && searchList.getGugun()==null && searchList.getSido()==null){
+            totalCampLists = campRepository.findAll();
+        }else{
+            totalCampLists = campRepository.findAll(searchCamps(searchList));
         }
 
+        List<CampDto.CampList> filterCampList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(searchList.getPage(), 10);
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), totalCampLists.size());
+        Page<TotalCampList> ptl = new PageImpl<>(totalCampLists.subList(start,end),pageable ,totalCampLists.size());
 
-        criteriaQuery.where()
+        for (TotalCampList cl : ptl){
+            CampDto.CampList tcl = new CampDto.CampList(cl);
+            filterCampList.add(tcl);
+        }
+
+        return filterCampList;
 
     }
 
-    public List<TotalCampList> findSearchedResult(SearchListDto.SearchList searchListDto){
-        Map<String, Object> searchKeys = new HashMap<>();
 
-        if (searchListDto.getKeyword() != null) searchKeys.put("keyword", searchListDto.getKeyword());
-        if (searchListDto.getSido() != null) searchKeys.put("sido", searchListDto.getSido());
-        if (searchListDto.getGugun() != null) searchKeys.put("gugun", searchListDto.getGugun());
-        if (searchListDto.getTags() != null) searchKeys.put("tags", searchListDto.getTags());
-
-        searchKeys.put("arrange",searchListDto.getArrange());
-
-        return campRepository.findAll(filterCampList(searchKeys))
-                .stream().map(s -> new TotalCampList((TotalCampList) s))
-                .collect(Collectors.toList());
-    }
-
-    public Specification<TotalCampList> filterCampList(Map<String, Object> searchKey){
-        return ((root, query, criteriaBuilder) -> {
+    public Specification<TotalCampList> searchCamps(SearchListDto.SearchList searchList){
+        return ((cl, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            searchKey.forEach((key, value) -> {
-                String likeValue = "%" + value + "%";
-
-                switch (key){
-                    case "keyword":
-                        Predicate keyword = criteriaBuilder.like(root.get("facltNm"),likeValue);
-                        predicates.add(keyword);
-                        break;
-
-                    case "sido" :
-                        Predicate sido = criteriaBuilder.like(root.get("doNm"),likeValue);
-                        predicates.add(sido);
-
-                    case "gugun" :
-                        Predicate gugun = criteriaBuilder.like(root.get("doNm"),likeValue);
-                        predicates.add(sido);
-                }
-
-
-            for (String key : searchKey.keySet()){
-                predicates.add(criteriaBuilder.equal(root.get(key),searchKey.get(key)));
+            if(searchList.getKeyword() != null){
+                String keyword = "%"+searchList.getKeyword()+"%";
+                Predicate keywordSearch = criteriaBuilder.like(cl.get("facltNm"),keyword);
+                predicates.add(keywordSearch);
             }
+
+            if(searchList.getSido() != null && searchList.getGugun() != null){
+                String sido = searchList.getSido()+"%";
+                String sigungu = searchList.getGugun()+"%";
+                Predicate regionSearchdoNm = criteriaBuilder.like(cl.get("doNm"),sido);
+                Predicate regionSearchsigungu = criteriaBuilder.like(cl.get("sigunguNm"),sigungu);
+                Predicate regionSearch = criteriaBuilder.and(regionSearchdoNm,regionSearchsigungu);
+                predicates.add(regionSearch);
+            }
+
+            if(!searchList.getTags().isEmpty()){
+                Subquery<Integer> subquery = criteriaQuery.subquery(Integer.class);
+                Root<CampTag> s = subquery.from(CampTag.class);
+                Join<TotalCampList, CampTag> ts = s.join("totalCampList");
+                subquery.select(ts.get("campId")).distinct(true).where(s.get("hashtag").in(searchList.getTags()));
+                Predicate tagSearch = cl.get("campId").in(subquery);
+                predicates.add(tagSearch);
+            }
+
+            if(searchList.getArrange() == 0){
+                criteriaQuery.orderBy(criteriaBuilder.asc(cl.get("facltNm")));  // 가나다순 정렬
+            }
+
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
-
 
 
 
