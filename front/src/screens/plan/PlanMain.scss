@@ -4,7 +4,7 @@
 
 .plan {
   width: (1150px);
-  .divide {
+  .divide_under {
     width: 100%;
     height: (1px);
   }
@@ -15,8 +15,9 @@
 
   &_coming,
   &_past {
+    flex-wrap: wrap;
     &_title {
-      margin: (32px) 0 (40px) 0;
+      margin: (40px) 0 (40px) 0;
     }
   }
 
@@ -25,6 +26,14 @@
       filter: brightness(65%);
     }
   }
+  .none_upcoming,
+  .none_endPlan {
+    &_txt {
+      color: $GRAY-67;
+      margin: 40px 0;
+    }
+  }
+
   &_login {
     margin-top: (180px);
     &_txt {
@@ -42,7 +51,7 @@
 @media screen and (max-width: $DESKTOP-VW) {
   .plan {
     width: vw(1150px);
-    .divide {
+    .divide_under {
       width: 100%;
       height: vw(1px);
     }
@@ -75,7 +84,7 @@
 @media screen and (max-width: $TABLET-VW) {
   .plan {
     width: vw-t(900px);
-    .divide {
+    .divide_under {
       width: 100%;
       height: vw-t(1px);
     }
@@ -114,7 +123,7 @@
 @media screen and (max-width: $DESKTOP-VW) {
   .plan {
     width: vw-p(900px);
-    .divide {
+    .divide_under {
       width: 100%;
       height: vw-p(1px);
     }

@@ -18,16 +18,10 @@ function PlanMain() {
         {userId !== null && (
           <>
             <div className="plan_coming">
-              <div className="plan_coming_title notoBold fs-28">
-                곧 다가올 캠핑이에요!
-              </div>
               <PlanUpcomingList />
             </div>
-            <div className="divide" />
+            <div className="divide_under" />
             <div className="plan_past">
-              <div className="plan_past_title notoBold fs-28">
-                지난 캠핑 어떠셨나요?
-              </div>
               <PlanEndList />
             </div>
           </>

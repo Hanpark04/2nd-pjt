@@ -5,12 +5,14 @@ import mainImg from "@images/temp_1.jpeg";
 import { useNavigate, useParams } from "react-router-dom";
 import Location from "@components/common/Location";
 import { getPlanDetail, deletePlan } from "@apis/plan";
+import { useSelector } from "react-redux";
 // import TodoItemList from "@components/plan/TodoItemList";
 
 function PlanDetail() {
   const [planInfo, setPlanInfo] = useState("");
   const { id: planId } = useParams();
   const navigate = useNavigate();
+  const userId = useSelector(state => state.user.email);
   // const [start, setStart] = useState("");
   // const [end, setEnd] = useState("");
 
@@ -73,7 +75,7 @@ function PlanDetail() {
             </p>
             <p className="plan_detail_box_right_address fs-20 notoMid">
               {planInfo.campAdd1}
-              {planInfo.campAdd2}
+              {planInfo.campAdd2 !== "\\N" && <div>{planInfo.campAdd2}</div>}
             </p>
             <p className="plan_detail_box_right_phone fs-20 notoMid">
               {planInfo.campTel}
@@ -91,22 +93,25 @@ function PlanDetail() {
               pos={{ mapY: planInfo.campMapX, mapX: planInfo.campMapY }}
             />
           )}
+          <div className="divide" />
         </div>
-        <div className="plan_detail_btn flex justify-center">
-          <button
-            onClick={deletePlanInfo}
-            type="button"
-            className="plan_detail_btn_delete fs-20 notoMid flex align-center justify-center"
-          >
-            일정 삭제
-          </button>
-          <button
-            type="button"
-            className="plan_detail_btn_modify fs-20 notoMid flex align-center justify-center"
-          >
-            일정 수정
-          </button>
-        </div>
+        {userId === planInfo.email && (
+          <div className="plan_detail_btn flex justify-center">
+            <button
+              onClick={deletePlanInfo}
+              type="button"
+              className="plan_detail_btn_delete fs-20 notoMid flex align-center justify-center"
+            >
+              일정 삭제
+            </button>
+            <button
+              type="button"
+              className="plan_detail_btn_modify fs-20 notoMid flex align-center justify-center"
+            >
+              일정 수정
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
