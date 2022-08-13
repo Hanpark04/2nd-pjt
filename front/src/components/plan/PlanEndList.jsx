@@ -24,7 +24,7 @@ function PlanEndList() {
       <div className="plan_past_title notoBold fs-28">
         지난 캠핑 어떠셨나요?
       </div>
-      <div lassName="flex">
+      <div className="flex">
         {list.length !== 0 &&
           list.map(
             ({

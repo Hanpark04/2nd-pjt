@@ -14,8 +14,8 @@
   }
 
   &_coming,
-  &_past {
-    flex-wrap: wrap;
+  &_past,
+  &_ing {
     &_title {
       margin: (40px) 0 (40px) 0;
     }
@@ -27,7 +27,8 @@
     }
   }
   .none_upcoming,
-  .none_endPlan {
+  .none_endPlan,
+  .none_ingPlan {
     &_txt {
       color: $GRAY-67;
       margin: 40px 0;

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./PlanMain.scss";
 import PlanUpcomingList from "@components/plan/PlanUpcomingList";
 import PlanEndList from "@components/plan/PlanEndList";
+import PlanIngList from "@components/plan/PlanIngList";
 
 function PlanMain() {
   // const dispatch = useDispatch();
@@ -17,6 +18,10 @@ function PlanMain() {
         <div className="plan_title notoBold fs-40">계획하기</div>
         {userId !== null && (
           <>
+            <div className="plan_coming">
+              <PlanIngList />
+            </div>
+            <div className="divide_under" />
             <div className="plan_coming">
               <PlanUpcomingList />
             </div>

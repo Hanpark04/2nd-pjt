@@ -27,6 +27,8 @@ export const addPlan = async (
 // 플랜 삭제하기
 export const deletePlan = async saveId => {
   const res = await API_USER.delete(`schedule/${saveId}`);
+  console.log(res);
+  console.log(res.data);
   return res.data;
 };
 
@@ -75,6 +77,11 @@ export const getUpcomingPlan = async (email, now) => {
     // }
   );
   // console.log(res.data);
+  return res.data;
+};
+// 현재 진행중인 캠핑 조회하기
+export const getIngPlan = async (email, now) => {
+  const res = await API_USER.get(`/schedule/ongoing?email=${email}&now=${now}`);
   return res.data;
 };
 // 지나간 캠핑 조회하기
