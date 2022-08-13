@@ -100,6 +100,17 @@
     width: (1150px);
     height: (720px);
   }
+  &_btn {
+    margin-top: 60px;
+    &_delete,
+    &_modify {
+      border-radius: 20px;
+      border: 1.5px solid $MAIN;
+      width: 180px;
+      height: 52px;
+      margin: 0 40px;
+    }
+  }
 }
 
 .todo_box {

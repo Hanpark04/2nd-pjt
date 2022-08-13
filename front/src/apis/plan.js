@@ -24,8 +24,14 @@ export const addPlan = async (
   return res.data;
 };
 
+// 플랜 삭제하기
+export const deletePlan = async saveId => {
+  const res = await API_USER.delete(`schedule/${saveId}`);
+  return res.data;
+};
+
 export const getPlanDetail = async saveId => {
-  console.log(saveId);
+  // console.log(saveId);
   const res = await API_USER.get(`schedule/${saveId}`);
   return res.data;
 };
@@ -57,7 +63,6 @@ export const modifyTodo = async (todoId, task, done, saveId) => {
 // todolist 삭제하기
 export const deleteTodo = async (todoId, saveId) => {
   const res = await API_USER.delete(`/schedule/${saveId}/todo/${todoId}`);
-  console.log(res.data);
   return res.data;
 };
 // 다가올 캠핑 조회하기
