@@ -12,7 +12,7 @@ import useOutSideClick from "../../utils/useOutSideClick";
 function Modal({ onClose, campId, facltNm }) {
   const navigate = useNavigate();
   const userId = useSelector(state => state.user.email);
-  console.log(userId);
+
   const handleClose = () => {
     onClose?.();
   };
@@ -29,12 +29,21 @@ function Modal({ onClose, campId, facltNm }) {
 
   const movePlan = async () => {
     const savedTitle = tripRef.current.value;
-    const saveId = await addPlan(campId, email, startDate, endDate, savedTitle);
-
-    if (saveId !== null || saveId === "\\N") {
-      navigate(`/plan/detail/${saveId}`);
+    if (savedTitle !== "" && savedTitle != null) {
+      const saveId = await addPlan(
+        campId,
+        email,
+        startDate,
+        endDate,
+        savedTitle
+      );
+      if (saveId !== null || saveId === "\\N") {
+        navigate(`/plan/detail/${saveId}`);
+      } else {
+        alert("fail");
+      }
     } else {
-      alert("fail");
+      alert("여행 이름을 입력해주세요");
     }
     // console.log(campId);
   };
