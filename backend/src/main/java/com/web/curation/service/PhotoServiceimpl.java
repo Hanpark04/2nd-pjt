@@ -222,7 +222,6 @@ public class PhotoServiceimpl implements PhotoService {
     }
 
 //    @CacheEvict(value = "photo", allEntries = true)
-    @Transactional
     @Override
     public boolean deletePhoto(int boardId) {
 
