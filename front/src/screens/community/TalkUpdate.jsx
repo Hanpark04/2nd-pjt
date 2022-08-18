@@ -39,9 +39,6 @@ function TalkUpdate() {
   const [titleLength, setTitleLength] = useState(0);
   const getValue = e => {
     setTitleLength(e.target.value.length);
-    if (e.target.value.length > 30) {
-      console.log("30자를 초과합니다.");
-    }
   };
   const submit = async () => {
     // eslint-disable-next-line no-use-before-define
@@ -60,7 +57,6 @@ function TalkUpdate() {
       reader.readAsDataURL(compressedImage);
       reader.onloadend = () => {
         const base64data = reader.result;
-        // console.log(base64data);
         // eslint-disable-next-line no-use-before-define
         handlingDataForm(base64data);
       };
@@ -94,7 +90,6 @@ function TalkUpdate() {
       formData.append("fileName", "baek");
       formData.append("file", file);
       formData.append("contents", talkContent.contents);
-      // formData.append("talkId", id);
       // eslint-disable-next-line no-restricted-syntax
       try {
         const res = await updateTalk(formData);
@@ -109,23 +104,14 @@ function TalkUpdate() {
   };
   return (
     <div className="container flex">
-      {/* 커뮤니티 네브바 들어가야 함 */}
       {userId !== null && <div className="modifyTalk">
         <div className="modifyTalk_title notoBold fs-32">글 수정하기</div>
         <div className="modifyTalk_content flex justify-center">
-          {/* 사진 업로드 박스 */}
-          {/* eslint-disable no-shadow */}
           <button
             className="modifyTalk_content_img flex align-center justify-center"
             onClick={handleClick}
             type="button"
           >
-            {/* {!fileImage && <Camera className="camera" fill="#DBDBDB" />} */}
-            {/* {!fileImage && ( */}
-            {/* <div className="modifyTalk_content_img_sub fs-28 notoBold"> */}
-            {/* Upload */}
-            {/* </div> */}
-            {/* )} */}
             <div className="modifyTalk_content_img_priv">
               {!fileImage && (
                 <img alt="수정이미지" src={[talkContent.blobFile]} />
@@ -158,21 +144,15 @@ function TalkUpdate() {
             />
             <div
               className="modifyTalk_text_name_count roReg fs-24"
-              // onChange={getValue}
             >
               {titleLength}/30
             </div>
           </div>
           <div className="divide" />
-          {/* <h1>테스트1</h1> */}
           <div className="modifyTalk_text_content_box" id="editor">
-            {/* <h1>테스트2</h1> */}
             {talkContent.contents != null && (
               <CKEditor
                 style={{ borderColor: "#467264" }}
-                // onReady={editor => {
-                //   editor.setData(talkContent.contents);
-                // }}
                 initData={talkContent.contents}
                 onChange={e => {
                   const data = e.editor.getData();
@@ -189,12 +169,10 @@ function TalkUpdate() {
                   width: 900,
                   resize_enabled: false,
                   toolbar: [
-                    // ["Source"],
                     ["Format", "Font", "FontSize"],
                     ["Bold", "Italic"],
                     ["Undo", "Redo"],
                     ["EasyImageUpload"]
-                    // ["About"]
                   ],
                   extraPlugins: "easyimage",
                   removePlugins: "image, elementspath",

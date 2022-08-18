@@ -12,25 +12,14 @@ function TalkList() {
   const [ref, inView] = useInView();
   async function getTalkList() {
     const res = await getTalk(page);
-    // console.log(res)
     setTalkList([...talkList, ...res]);
-    // console.log(talkList);
     setLoading(false);
   }
-  // useEffect(() => {
-  //   async function setTalk() {
-  //     const page = 1;
-  //     const res = await getTalk(page);
-  //     // console.log(res);
-  //     setTalkList([...talkList, ...res]);
-  //   }
-  //   setTalk();
-  // }, []);
+
   useEffect(() => {
     if (inView && !loading) {
       setLoading(true);
       setPage(page + 1);
-      // console.log(page);
       getTalkList();
     }
   }, [inView, loading]);
