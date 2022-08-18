@@ -26,7 +26,6 @@
     // align-content: flex-start;
   }
   &_infoma {
-    // background-color: red;
     justify-content: space-between;
     width: (350px);
     &_profile {
@@ -48,7 +47,6 @@
     }
     &_txt {
       color: $GRAY-67;
-      // background-color: red;
       &_look,
       &_like {
         margin-left: (16px);
