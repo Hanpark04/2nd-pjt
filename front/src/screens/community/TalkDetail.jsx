@@ -10,7 +10,7 @@ import "./TalkDetail.scss";
 // import navLogo from "@images/logo/logo_icon_green.svg";
 import dummyProfile from "@images/person.png";
 import good from "@images/icon/favorite_black.svg";
-import nogood from "@images/icon/favorite_border_black_24dp.svg";
+import nogood from "@images/icon/favorite_border.svg";
 // import TalkComments from "@components/community/TalkComments";
 import TalkComment from "@components/community/TalkComment";
 // import InlineEditor from '@ckeditor/ckeditor5-build-inline';
