@@ -1,8 +1,13 @@
+
+
 .wrapper {
   justify-content: center;
 }
 
 #MainNavBar {
+  .p-none {
+    display: hidden;
+  }
   width: 100%;
   height: (100px);
   align-items: center;
@@ -108,10 +113,9 @@
     color: $WHITE;
   }
 }
-
-.mobile_menu {
-  display: none;
-}
+// .mobile_menu {
+//   display: none;
+// }
 
 @media screen and (max-width: $TABLET-VW) {
   #MainNavBar {
@@ -206,6 +210,9 @@
 
 @media screen and (max-width: $PHONE-VW) {
   #MainNavBar {
+    .p-none {
+      visibility: visible;
+    }
     width: 100%;
     height: (60px);
 
@@ -299,8 +306,11 @@
     }
   }
   .mobile_menu {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: vw-p(30px) vw-p(100px);
+    // height: vw-p(300px);
+    visibility: visible;
+    padding: vw-p(5px) vw-p(100px);
+    background-color: rgba(255, 255, 255, 0.95);   
+
     .divide {
       margin: vw-p(10px) 0;
       height: 1px;
@@ -308,7 +318,7 @@
       color: $GRAY-DB;
     }
     button {
-      margin: vw-p(8px) vw-p(20px);
+      // margin: vw-p(8px) vw-p(20px);
       padding: vw-p(10px) 0;
 
       &:hover {

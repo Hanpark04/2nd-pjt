@@ -145,6 +145,14 @@ function PlanDetail() {
             >
               일정 수정
             </button>
+            {isSocial === "kakao" && (
+              <button type="button"
+                onClick={shareKakao}
+                className="plan_detail_btn_kakao fs-20 notoMid flex align-center justify-center"
+                >
+                  카카오톡 공유하기
+              </button>
+            )}
           </div>
         )}
         {modalVisible && (
@@ -157,11 +165,7 @@ function PlanDetail() {
             planName={planInfo.savedTitle}
           />
         )}
-        {isSocial === "kakao" && (
-          <button type="button" onClick={shareKakao}>
-            카카오 공유하기 테스트
-          </button>
-        )}
+
       </div>
     </div>
   );

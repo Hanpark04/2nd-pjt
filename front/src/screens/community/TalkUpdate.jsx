@@ -3,7 +3,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import "./TalkUpdate.scss";
-import imageCompression from "browser-image-compression";
+// import imageCompression from "browser-image-compression";
 import { useSelector } from "react-redux";
 import { CKEditor } from "ckeditor4-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -14,14 +14,6 @@ function TalkUpdate() {
   const userId = useSelector(state => state.user.email);
   const { id } = useParams();
   const navigate = useNavigate();
-  const photoInput = useRef();
-  const handleClick = () => {
-    photoInput.current.click();
-  };
-  const [fileImage, setFileImage] = useState(""); // 파일이미지
-  const saveFileImage = event => {
-    setFileImage(URL.createObjectURL(event.target.files[0]));
-  };
   const titleRef = useRef();
   const tagRef = useRef();
   const [talkContent, setTalkContent] = useState({
@@ -40,41 +32,7 @@ function TalkUpdate() {
   const getValue = e => {
     setTitleLength(e.target.value.length);
   };
-  const submit = async () => {
-    // eslint-disable-next-line no-use-before-define
-    actionImgCompress(photoInput.current.files[0]);
-  };
-  /* eslint-disable-next-line no-shadow */
-  const actionImgCompress = async fileImage => {
-    const options = {
-      maxSizeMB: 0.2,
-      maxWidthOrHeight: 720,
-      useWebWorker: true
-    };
-    try {
-      const compressedImage = await imageCompression(fileImage, options);
-      const reader = new FileReader();
-      reader.readAsDataURL(compressedImage);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        // eslint-disable-next-line no-use-before-define
-        handlingDataForm(base64data);
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handlingDataForm = async dataURI => {
-    const byteString = atob(dataURI.split(",")[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([ia], {
-      type: "image/jpeg"
-    });
+  const modiTalk = async () => {
     if (
       titleRef.current.value === "" ||
       talkContent.contents === "" ||
@@ -82,13 +40,11 @@ function TalkUpdate() {
     ) {
       window.alert("내용을 채워주세요!");
     } else {
-      const file = new File([blob], "image.jpg");
       const formData = new FormData();
       formData.append("talkId", id);
       formData.append("title", titleRef.current.value);
       formData.append("hashtag", tagRef.current.value);
       formData.append("fileName", "baek");
-      formData.append("file", file);
       formData.append("contents", talkContent.contents);
       // eslint-disable-next-line no-restricted-syntax
       try {
@@ -107,29 +63,11 @@ function TalkUpdate() {
       {userId !== null && <div className="modifyTalk">
         <div className="modifyTalk_title notoBold fs-32">글 수정하기</div>
         <div className="modifyTalk_content flex justify-center">
-          <button
-            className="modifyTalk_content_img flex align-center justify-center"
-            onClick={handleClick}
-            type="button"
-          >
+          {/* 사진 업로드 박스 */}
+          {/* eslint-disable no-shadow */}
             <div className="modifyTalk_content_img_priv">
-              {!fileImage && (
-                <img alt="수정이미지" src={[talkContent.blobFile]} />
-              )}
-              {fileImage && <img alt="수정이미지" src={fileImage} />}
+              <img alt="수정이미지" src={[talkContent.blobFile]} />
             </div>
-            <input
-              type="file"
-              multiple="multiple"
-              encType="multipart/form-data"
-              accept="image/jpg, image.jpeg, image.png"
-              ref={photoInput}
-              style={{ display: "none" }}
-              name="imgFile"
-              id="imgFile"
-              onChange={saveFileImage}
-            />
-          </button>
         </div>
         <div className="modifyTalk_text flex align-center justify-center">
           <div className="modifyTalk_text_name flex align-center">
@@ -177,9 +115,9 @@ function TalkUpdate() {
                   extraPlugins: "easyimage",
                   removePlugins: "image, elementspath",
                   cloudServices_uploadUrl:
-                    "https://91146.cke-cs.com/easyimage/upload/",
+                    "https://91303.cke-cs.com/easyimage/upload/",
                   cloudServices_tokenUrl:
-                    "https://91146.cke-cs.com/token/dev/dhX4bynkAsQH3fJCt5hcTqSXRmjWtPGhgE2f?limit=10"
+                    "https://91303.cke-cs.com/token/dev/YKWXTv96VvydZrqmu2LT57Ln33mQdHh10Kfe?limit=10"
                 }}
               />
             )}
@@ -202,7 +140,7 @@ function TalkUpdate() {
           <button
             type="button"
             className="modifyTalk_btn_ok notoBold fs-24"
-            onClick={submit}
+            onClick={modiTalk}
           >
             수정하기
           </button>

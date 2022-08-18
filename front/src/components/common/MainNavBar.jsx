@@ -35,7 +35,8 @@ function MainNavBar() {
     setOpenTool(!openTool);
   };
   const openMobile = () => {
-    setOpenMenu(true);
+    console.log("openMobile",openMenu);
+    setOpenMenu((e) => !e);
   };
   const moveEdit = () => {
     navigate("/infoedit");
@@ -256,8 +257,9 @@ function MainNavBar() {
               </div>
             </div>
           )}
-          {openMenu === true && (
-            <div className="mobile_menu flex column ">
+          
+        {openMenu === true && (
+            <div className="mobile_menu flex column p-none">
               <button
                 type="button"
                 className="mobile_menu__link fs-16"
